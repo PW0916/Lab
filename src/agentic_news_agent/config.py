@@ -17,6 +17,7 @@ class AgentConfig:
     max_articles: int = 30
     lookback_hours: int = 48
     report_dir: str = "reports"
+    website_dir: str = "docs"
 
     keywords: list[str] = field(default_factory=lambda: [
         "agentic ai",

@@ -33,6 +33,16 @@ def build_parser() -> argparse.ArgumentParser:
         help="Directory to save generated reports (default: reports/)",
     )
     parser.add_argument(
+        "--website-dir",
+        default="docs",
+        help="Directory for the generated news website (default: docs/)",
+    )
+    parser.add_argument(
+        "--rebuild-website",
+        action="store_true",
+        help="Rebuild the news website from saved report data (no fetching)",
+    )
+    parser.add_argument(
         "--verbose", "-v",
         action="store_true",
         help="Enable verbose logging",
@@ -58,13 +68,21 @@ def main(argv: list[str] | None = None) -> int:
         max_articles=args.max_articles,
         lookback_hours=args.lookback_hours,
         report_dir=args.report_dir,
+        website_dir=args.website_dir,
     )
 
-    articles, report_path = agent.run(datetime.now(timezone.utc))
+    if args.rebuild_website:
+        site_path = agent.rebuild_website()
+        print(f"\n✓ News website rebuilt")
+        print(f"  Website:  {site_path}/index.html")
+        return 0
+
+    articles, report_path, site_path = agent.run(datetime.now(timezone.utc))
 
     print(f"\n✓ Agentic AI Daily News Report generated")
     print(f"  Articles: {len(articles)}")
     print(f"  Report:   {report_path}")
+    print(f"  Website:  {site_path}/index.html")
 
     if args.print_report:
         print("\n" + "=" * 60 + "\n")
