@@ -16,13 +16,14 @@
   --sim: #2a5f8a;
   --sim-soft: #d7e6f3;
   --shadow: 0 12px 40px rgba(20, 34, 28, 0.08);
-  font-family: "IBM Plex Sans", "Noto Sans", sans-serif;
+  --ui: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: var(--ui);
   color: var(--ink);
   background: var(--paper);
 }
 
 * { box-sizing: border-box; }
-html, body, #root { height: 100%; margin: 0; }
+html, body, #root { height: 100%; margin: 0; font-family: var(--ui); }
 button, input, textarea, select { font: inherit; }
 button { cursor: pointer; }
 
@@ -46,7 +47,7 @@ button { cursor: pointer; }
   flex-direction: column;
   min-width: 220px;
 }
-.brand strong { font-family: Fraunces, Georgia, serif; font-size: 18px; letter-spacing: 0.02em; }
+.brand strong { font-family: Georgia, "Iowan Old Style", serif; font-size: 18px; letter-spacing: 0.02em; }
 .brand span { font-size: 11px; opacity: 0.75; }
 .tabs { display: flex; gap: 6px; }
 .tabs button, .ghost, .solid, .danger {
@@ -105,7 +106,7 @@ button { cursor: pointer; }
 .nav button.on { background: var(--paper-2); box-shadow: var(--shadow); font-weight: 600; }
 
 .main { padding: 22px 26px; overflow: auto; background: linear-gradient(180deg, #f7f3ea, #efe8d8); }
-.main h1 { font-family: Fraunces, Georgia, serif; font-size: 28px; margin: 0 0 6px; }
+.main h1 { font-family: Georgia, "Iowan Old Style", serif; font-size: 28px; margin: 0 0 6px; }
 .lede { color: var(--ink-soft); max-width: 720px; margin-bottom: 18px; }
 
 .grid { display: grid; gap: 12px; }
@@ -162,6 +163,8 @@ th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: 
 .hints button { background: white; border: 1px solid var(--rule); border-radius: 999px; padding: 5px 10px; font-size: 12px; }
 
 .panel { background: #f7f3ea; border-left: 1px solid var(--rule); padding: 14px; }
+.panel .tabs button { color: var(--ink); border-color: var(--rule); }
+.panel .tabs button.on { background: var(--jade); color: #fff; }
 .check { display: flex; justify-content: space-between; gap: 8px; padding: 8px 0; border-bottom: 1px solid var(--rule); font-size: 13px; }
 .formula { font-family: ui-monospace, monospace; font-size: 11px; color: var(--ink-soft); }
 

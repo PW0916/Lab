@@ -275,6 +275,37 @@ export default function Assistant({ state, onChange }) {
               {selected.caseRef || "Draft"} · {selected.status}
             </div>
             <Checks evaluation={ev} />
+            {inbox.find((i) => i.task.caseRef === selected.caseRef) && (
+              <div className="btn-row">
+                <button
+                  className="solid"
+                  onClick={() =>
+                    decide(inbox.find((i) => i.task.caseRef === selected.caseRef).task, "APPROVE")
+                  }
+                >
+                  Approve
+                </button>
+                <button
+                  className="ghost"
+                  onClick={() =>
+                    decide(
+                      inbox.find((i) => i.task.caseRef === selected.caseRef).task,
+                      "RETURN_FOR_REVISION"
+                    )
+                  }
+                >
+                  Return
+                </button>
+                <button
+                  className="danger"
+                  onClick={() =>
+                    decide(inbox.find((i) => i.task.caseRef === selected.caseRef).task, "REJECT")
+                  }
+                >
+                  Reject
+                </button>
+              </div>
+            )}
             {selected.handover && (
               <article className="card" style={{ marginTop: 10 }}>
                 <h4>Handover to Pricing Ops</h4>
