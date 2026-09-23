@@ -295,7 +295,9 @@ def compose_diagram(version_block: dict[str, Any]) -> dict[str, Any]:
             row = rank
 
             def add_human(hid: str, label: str) -> str:
-                add_node(hid, "userTask", label, subtitle="Human decision", lane=len(human_ids), at=row)
+                lane = len(human_ids) % 3
+                at = row + len(human_ids) // 3
+                add_node(hid, "userTask", label, subtitle="Human decision", lane=lane, at=at)
                 add_flow(split, hid)
                 human_ids.append(hid)
                 return hid
@@ -313,7 +315,7 @@ def compose_diagram(version_block: dict[str, Any]) -> dict[str, Any]:
                     finance_id = hid
                 if "approver" in low:
                     approver_id = hid
-            rank = row + 1
+            rank = row + max(1, (len(human_ids) + 2) // 3)
 
             if approver_id is None:
                 approver_id = add_human(f"{sid}__approver", "Approver decision")

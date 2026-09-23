@@ -45,20 +45,32 @@ function edgePath(from, to) {
 function NodeShape({ node, selected, onSelect }) {
   const { left, top, w, h } = centerOf(node);
   const cls = `wf-node ${node.kind}${selected ? " selected" : ""}`;
+  const hit = (
+    <rect
+      className="hit"
+      x="-4"
+      y="-4"
+      width={w + 8}
+      height={h + 20}
+      rx="10"
+      onClick={() => onSelect(node)}
+    />
+  );
   if (node.kind === "startEvent" || node.kind === "endEvent") {
     return (
-      <g className={cls} onClick={() => onSelect(node)} transform={`translate(${left},${top})`}>
+      <g className={cls} data-node-id={node.id} transform={`translate(${left},${top})`}>
         <circle cx={w / 2} cy={h / 2} r={node.kind === "endEvent" ? 18 : 16} />
         {node.kind === "endEvent" && <circle cx={w / 2} cy={h / 2} r={13} className="inner" />}
         <text x={w / 2} y={h + 14} textAnchor="middle">
           {node.label}
         </text>
+        {hit}
       </g>
     );
   }
   if (node.kind === "exclusiveGateway" || node.kind === "parallelGateway") {
     return (
-      <g className={cls} onClick={() => onSelect(node)} transform={`translate(${left},${top})`}>
+      <g className={cls} data-node-id={node.id} transform={`translate(${left},${top})`}>
         <polygon points={`${w / 2},2 ${w - 2},${h / 2} ${w / 2},${h - 2} 2,${h / 2}`} />
         <text x={w / 2} y={h / 2 + 5} textAnchor="middle" className="gw-mark">
           {node.kind === "parallelGateway" ? "+" : "×"}
@@ -66,11 +78,12 @@ function NodeShape({ node, selected, onSelect }) {
         <text x={w / 2} y={h + 14} textAnchor="middle">
           {node.label}
         </text>
+        {hit}
       </g>
     );
   }
   return (
-    <g className={cls} onClick={() => onSelect(node)} transform={`translate(${left},${top})`}>
+    <g className={cls} data-node-id={node.id} transform={`translate(${left},${top})`}>
       <rect x="0" y="0" width={w} height={h} rx="10" />
       {node.kind === "userTask" && <rect x="6" y="6" width={w - 12} height={h - 12} rx="7" className="inner" />}
       <text x={12} y={26} className="title">
@@ -79,6 +92,7 @@ function NodeShape({ node, selected, onSelect }) {
       <text x={12} y={48} className="sub">
         {node.subtitle}
       </text>
+      {hit}
     </g>
   );
 }
@@ -148,6 +162,7 @@ export default function WorkflowDiagram({ diagram, rules }) {
           tasks · {c.sequenceFlows || 0} sequence flows
         </span>
       </div>
+      <div className="wf-body">
       <div className="wf-canvas">
         <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Workflow sequence flow">
           <defs>
@@ -178,7 +193,10 @@ export default function WorkflowDiagram({ diagram, rules }) {
           ))}
         </svg>
       </div>
-      <Inspector node={selected} rules={rules} />
+      <div className="wf-inspector">
+        <Inspector node={selected} rules={rules} />
+      </div>
+      </div>
     </div>
   );
 }
