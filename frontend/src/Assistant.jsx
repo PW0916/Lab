@@ -1,20 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { assistant as assistantApi, cases as casesApi } from "./api";
 
-const HINTS = [
-  "I want to run Vitamin C effervescent at 89 in the 20 pilot stores for the next cycle.",
-  "Glow Radiance Serum at 139 in Hong Kong Island Core and Kowloon East for C22. Glow Beauty is giving us 12 dollars a unit scan-back.",
-  "Sunveil SPF50 at 109, all stores plus eShop, leaflet, C22, 3,000 units. We had a lump sum from Sunveil — FC-2026-033.",
-  "Can we do 10% off PureNest Stage 1 for members in C22?",
-  "FreshMint twin pack, 59.9 down to 45, Island Core stores, C21, 1,600 units. Show the saving on the shelf talker.",
-  "AquaDew masks 89 to 69, everywhere, in the leaflet, C21, 4,000 units. AquaDew are giving 500 free units.",
-  "OceanPure Omega-3 at 199, all channels, leaflet, C23, 4,500 units. OceanPure funds 25 a unit — FC-2026-052.",
-  "Can I run a flash on MediRelief ibuprofen this weekend?",
-  "What's the flash cut-off now?",
-  "Where are my cases?",
-  "DermaCalm cleanser 119 to 95, all stores, C22, 2,500 units.",
-];
-
 function Simulated() {
   return <span className="badge sim">SIMULATED</span>;
 }
@@ -203,7 +189,7 @@ export default function Assistant({ state, onChange }) {
           </button>
         ))}
       </aside>
-      <section style={{ display: "grid", gridTemplateRows: "1fr auto auto", minHeight: 0, background: "#efe8d8" }}>
+      <section style={{ display: "grid", gridTemplateRows: "1fr auto", minHeight: 0, background: "#efe8d8" }}>
         <div className="thread">
           {messages.map((m, i) => (
             <div key={i} className={`msg ${m.role}`}>
@@ -211,13 +197,6 @@ export default function Assistant({ state, onChange }) {
             </div>
           ))}
           <div ref={end} />
-        </div>
-        <div className="hints">
-          {HINTS.slice(0, 6).map((h) => (
-            <button key={h} onClick={() => send(h)}>
-              {h.slice(0, 42)}…
-            </button>
-          ))}
         </div>
         <form
           className="composer"

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { studio as studioApi } from "./api";
+import WorkflowDiagram from "./WorkflowDiagram.jsx";
 
 const NAV = [
   ["workspace", "Knowledge workspace"],
@@ -182,26 +183,12 @@ export default function Studio({ state, onChange }) {
               Blueprint {data.blueprint.version}{" "}
               <span className="badge green">{data.blueprint.status}</span>
             </h1>
-            <p className="lede">{data.blueprint.summary}</p>
-            {(data.blueprint.stages || []).map((s) => (
-              <div className="stage" key={s.id}>
-                <div className="stage-id">{s.id}</div>
-                <div>
-                  <strong>{s.name}</strong>
-                  <div className="muted">
-                    Owner {s.owner}
-                    {s.systems ? ` · ${s.systems.join(", ")}` : ""}
-                  </div>
-                  <div>
-                    {(s.rules || []).map((id) => (
-                      <span key={id} className="rule-chip">
-                        <RuleHover id={id} rules={rules} />
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
+            <p className="lede">
+              {data.blueprint.summary} The composer generated a sequence-flow diagram —
+              activities, exclusive and parallel gateways, human tasks and labeled flows.
+              Click a node for rules, systems, pauses and outputs.
+            </p>
+            <WorkflowDiagram diagram={data.diagram} rules={rules} />
           </>
         )}
 

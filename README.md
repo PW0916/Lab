@@ -41,7 +41,7 @@ Replays golden scenarios A–M against the engine and mock derived fields (margi
 4. **Bonnie Lai** — Stage 1 block then Stage 3 (D); FreshMint Special Price (E).
 5. Clock to **2026-10-13** — “Where are my cases?” (L). Toggle **ERP cost timeout** for DermaCalm (M).
 
-Hint chips on the Assistant replay the conversation-script openers. **Seed storyline** pre-creates A–G so time-travel can be shown without a full replay.
+**Seed storyline** pre-creates A–G so time-travel can be shown without a full replay. The Assistant does not preset presenter lines.
 
 ## Layout
 

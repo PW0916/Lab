@@ -158,6 +158,231 @@ def approve_blueprint(by: str = "Mei Wong") -> dict[str, Any]:
     return STORE.studio
 
 
+def _stage_payload(stage: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "id": stage.get("id"),
+        "name": stage.get("name"),
+        "owner": stage.get("owner"),
+        "rules": stage.get("rules") or [],
+        "systems": stage.get("systems") or [],
+        "collects": stage.get("collects") or [],
+        "outputs": stage.get("outputs") or [],
+        "pauseOn": stage.get("pauseOn") or [],
+        "stopOn": stage.get("stopOn"),
+        "humanTouch": stage.get("humanTouch"),
+        "parallel": stage.get("parallel") or [],
+    }
+
+
+def _slug(text: str) -> str:
+    keep = [c.lower() if c.isalnum() else "-" for c in text]
+    slug = "".join(keep).strip("-")
+    while "--" in slug:
+        slug = slug.replace("--", "-")
+    return slug[:40] or "node"
+
+
+def compose_diagram(version_block: dict[str, Any]) -> dict[str, Any]:
+    """Blueprint Composer: sequence-flow graph (nodes + flows) from a version.
+
+    Stages become activity nodes. ``stopOn`` becomes an exclusive gateway,
+    ``humanTouch`` uploads become a user-task loop, and ``parallel`` becomes
+    a parallel split of human nodes with labeled sequence flows — the
+    workflow-map, not a stacked list.
+    """
+    stages = list(version_block.get("stages") or [])
+    nodes: list[dict[str, Any]] = []
+    flows: list[dict[str, Any]] = []
+    rank = 0
+
+    def add_node(
+        nid: str,
+        kind: str,
+        label: str,
+        *,
+        subtitle: str = "",
+        lane: int = 0,
+        at: int | None = None,
+        stage: dict[str, Any] | None = None,
+        terminal: str | None = None,
+    ) -> int:
+        nonlocal rank
+        use = rank if at is None else at
+        node: dict[str, Any] = {
+            "id": nid,
+            "kind": kind,
+            "label": label,
+            "subtitle": subtitle,
+            "rank": use,
+            "lane": lane,
+        }
+        if stage is not None:
+            node["stage"] = _stage_payload(stage)
+        if terminal:
+            node["terminal"] = terminal
+        nodes.append(node)
+        if at is None:
+            rank += 1
+        return use
+
+    def add_flow(src: str, tgt: str, label: str = "", kind: str = "sequence") -> None:
+        flows.append(
+            {
+                "id": f"sf-{src}-{tgt}-{_slug(label) or 'seq'}",
+                "source": src,
+                "target": tgt,
+                "label": label,
+                "kind": kind,
+            }
+        )
+
+    add_node("start", "startEvent", "Start", subtitle="Case opened")
+    prev = "start"
+    pending_label = ""
+    skip_incoming: set[str] = set()
+
+    for idx, stage in enumerate(stages):
+        sid = str(stage["id"])
+        name = str(stage.get("name") or sid)
+        owner = str(stage.get("owner") or "")
+        next_id = str(stages[idx + 1]["id"]) if idx + 1 < len(stages) else None
+
+        activity_rank = add_node(sid, "activity", f"{sid}  {name}", subtitle=owner, stage=stage)
+        if sid not in skip_incoming:
+            add_flow(prev, sid, pending_label)
+        pending_label = ""
+        prev = sid
+
+        if stage.get("stopOn"):
+            gid = f"{sid}__xor"
+            gw_rank = add_node(gid, "exclusiveGateway", "Gateway", subtitle=str(stage["stopOn"]))
+            add_flow(sid, gid)
+            add_node(
+                f"{sid}__blocked",
+                "endEvent",
+                "Closed",
+                subtitle=str(stage["stopOn"]),
+                lane=1,
+                at=gw_rank,
+                terminal=str(stage["stopOn"]),
+            )
+            add_flow(gid, f"{sid}__blocked", "BLOCKED")
+            prev = gid
+            pending_label = "proceed"
+
+        if "upload" in str(stage.get("humanTouch") or "").lower():
+            hid = f"{sid}__human"
+            add_node(
+                hid,
+                "userTask",
+                "Promotion Owner uploads letter",
+                subtitle="Human touch",
+                lane=1,
+                at=activity_rank,
+            )
+            add_flow(sid, hid, "evidence needed", kind="association")
+            add_flow(hid, sid, "", kind="association")
+
+        parallel = stage.get("parallel") or []
+        if parallel:
+            split = f"{sid}__and"
+            add_node(split, "parallelGateway", "Split", subtitle="Parallel approvals")
+            add_flow(sid, split)
+
+            human_ids: list[str] = []
+            approver_id = None
+            finance_id = None
+            row = rank
+
+            def add_human(hid: str, label: str) -> str:
+                add_node(hid, "userTask", label, subtitle="Human decision", lane=len(human_ids), at=row)
+                add_flow(split, hid)
+                human_ids.append(hid)
+                return hid
+
+            for item in parallel:
+                text = str(item)
+                low = text.lower()
+                parts = [p.strip() for p in text.replace("->", "→").split("→") if p.strip()]
+                if len(parts) > 1 and any("approver" in p.lower() for p in parts[1:]):
+                    finance_id = add_human(f"{sid}__{_slug(parts[0])}", parts[0])
+                    approver_id = add_human(f"{sid}__approver", parts[1][:1].upper() + parts[1][1:])
+                    continue
+                hid = add_human(f"{sid}__{_slug(text)}", parts[0] if parts else text)
+                if "finance" in low:
+                    finance_id = hid
+                if "approver" in low:
+                    approver_id = hid
+            rank = row + 1
+
+            if approver_id is None:
+                approver_id = add_human(f"{sid}__approver", "Approver decision")
+
+            if finance_id and approver_id and finance_id != approver_id:
+                add_flow(finance_id, approver_id)
+
+            xor = f"{sid}__decision"
+            xor_rank = add_node(xor, "exclusiveGateway", "Decision", subtitle="Approve or return")
+            add_flow(approver_id, xor)
+            add_node(
+                f"{sid}__returned",
+                "endEvent",
+                "Closed",
+                subtitle="RETURNED / REJECTED",
+                lane=2,
+                at=xor_rank,
+                terminal="RETURNED_FOR_REVISION / REJECTED",
+            )
+            add_flow(xor, f"{sid}__returned", "returned / rejected")
+
+            join = f"{sid}__join"
+            add_node(join, "parallelGateway", "Join", subtitle="Gates complete", lane=1, at=xor_rank)
+            for hid in human_ids:
+                if hid not in {approver_id, finance_id}:
+                    add_flow(hid, join)
+
+            if next_id:
+                add_flow(xor, next_id, "approved")
+                add_flow(join, next_id)
+                skip_incoming.add(next_id)
+                prev = next_id
+            else:
+                add_node(f"{sid}__end", "endEvent", "End", subtitle="Approved path")
+                add_flow(xor, f"{sid}__end", "approved")
+                add_flow(join, f"{sid}__end")
+                prev = f"{sid}__end"
+
+    if prev and not any(n["id"] == "end" for n in nodes):
+        last = next((n for n in nodes if n["id"] == prev), None)
+        if last and last["kind"] == "endEvent":
+            pass
+        else:
+            add_node("end", "endEvent", "End", subtitle="Handover complete")
+            add_flow(prev, "end")
+
+    counts: dict[str, int] = {}
+    for n in nodes:
+        counts[n["kind"]] = counts.get(n["kind"], 0) + 1
+
+    return {
+        "workflow": version_block.get("name") or "Promotion Request and Approval",
+        "version": version_block.get("version"),
+        "status": version_block.get("status"),
+        "notation": "BPMN sequence flow",
+        "nodes": nodes,
+        "sequenceFlows": flows,
+        "counts": {
+            "nodes": len(nodes),
+            "sequenceFlows": len(flows),
+            "activities": counts.get("activity", 0),
+            "gateways": counts.get("exclusiveGateway", 0) + counts.get("parallelGateway", 0),
+            "userTasks": counts.get("userTask", 0),
+            "events": counts.get("startEvent", 0) + counts.get("endEvent", 0),
+            **counts,
+        },
+    }
+
+
 def studio_state() -> dict[str, Any]:
     km = knowledge_model()
     bp = workflow_blueprint()
@@ -179,6 +404,7 @@ def studio_state() -> dict[str, Any]:
         "findings": findings,
         "glossary": km.get("glossary") or [],
         "blueprint": version_block,
+        "diagram": compose_diagram(version_block),
         "blueprintAllVersions": bp["versions"],
         "feedbackCatalogue": FEEDBACK_CATALOGUE,
         "agents": agents,

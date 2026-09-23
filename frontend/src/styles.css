@@ -159,8 +159,32 @@ th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: 
   flex: 1; min-height: 52px; resize: vertical; border-radius: 12px; border: 1px solid var(--rule);
   padding: 10px; background: var(--paper-2);
 }
-.hints { display: flex; gap: 6px; flex-wrap: wrap; padding: 0 12px 8px; background: #ebe4d6; }
-.hints button { background: white; border: 1px solid var(--rule); border-radius: 999px; padding: 5px 10px; font-size: 12px; }
+.wf-meta { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
+.wf-canvas {
+  overflow: auto;
+  background: #fbf8f1;
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  margin-bottom: 14px;
+  max-height: 68vh;
+}
+.wf-node { cursor: pointer; }
+.wf-node rect { fill: var(--paper-2); stroke: #2a4a3c; stroke-width: 1.6; }
+.wf-node.userTask rect { fill: #fff3cd; stroke: #b58900; }
+.wf-node.userTask rect.inner { fill: none; stroke: #b58900; stroke-width: 1; }
+.wf-node.selected rect, .wf-node.selected polygon, .wf-node.selected circle { stroke: var(--jade); stroke-width: 2.4; }
+.wf-node text { fill: var(--ink); font-size: 11px; }
+.wf-node text.title { font-size: 12px; font-weight: 700; }
+.wf-node text.sub { fill: var(--ink-soft); font-size: 10px; }
+.wf-node circle { fill: #e8f4ee; stroke: #0d6b4e; stroke-width: 2.2; }
+.wf-node.endEvent circle { fill: #f6d8d2; stroke: #a33b2b; }
+.wf-node.endEvent circle.inner { fill: none; }
+.wf-node polygon { fill: #fffdf8; stroke: #0d6b4e; stroke-width: 1.8; }
+.wf-node text.gw-mark { font-size: 16px; font-weight: 700; fill: #0d6b4e; }
+.wf-flow path { fill: none; stroke: #3b4a43; stroke-width: 1.6; }
+.wf-flow.association path { stroke-dasharray: 5 4; stroke: #b58900; }
+.wf-flow text { font-size: 10px; fill: #6d4e10; font-weight: 600; }
+#wf-arrow path { fill: #3b4a43; }
 
 .panel { background: #f7f3ea; border-left: 1px solid var(--rule); padding: 14px; }
 .panel .tabs button { color: var(--ink); border-color: var(--rule); }
