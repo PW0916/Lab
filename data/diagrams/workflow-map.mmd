@@ -1,0 +1,29 @@
+flowchart TD
+    S01[S01 Intake: item and intent] --> S02[S02 Item and commercial data]
+    S02 --> S03{S03 Regulatory screen}
+    S03 -- BLOCKED --> X1[Closed: BLOCKED_REGULATORY, alternatives offered]
+    S03 -- proceed --> S04[S04 Intake: offer details, completeness, cut-off]
+    S04 --> S05[S05 Funding recognition]
+    S05 -. evidence needed .-> U1((Promotion Owner uploads letter))
+    U1 -.-> S05
+    S05 --> S06[S06 Calendar conflict and frequency]
+    S06 --> S07[S07 Reference price and claims]
+    S07 --> S08[S08 Promotion economics]
+    S08 --> S09[S09 Supply readiness]
+    S09 --> S10[S10 Setup feasibility - Pricing Ops pre-check]
+    S10 --> S11[S11 Approval routing - band, escalations, delegation, SoD]
+    S11 --> S12[S12 Decision pack and approvals]
+    S12 --> F[Finance review - Band B+]
+    S12 --> A[Approver decision]
+    S12 --> G1[Compliance gate]
+    S12 --> G2[Supply Chain gate]
+    S12 --> G3[Cut-off exception]
+    F --> A
+    A -- approved --> S13[S13 Post-approval setup - simulated PromoHub draft]
+    A -- returned / rejected --> X2[RETURNED_FOR_REVISION / REJECTED]
+    G1 --> S13
+    G2 --> S13
+    G3 --> S13
+    S13 --> S14[S14 Completion and handover]
+    classDef human fill:#fff3cd,stroke:#b58900
+    class U1,F,A,G1,G2,G3 human
