@@ -1,0 +1,2395 @@
+{
+  "meta": {
+    "fixtureVersion": "2.0",
+    "demoClock": "2026-09-28",
+    "currency": "HKD",
+    "simulated": true,
+    "note": "All entities are fictional. Every API response built from these fixtures must carry meta.simulated=true."
+  },
+  "referenceData": {
+    "marginFloors": {
+      "OWN_BRAND": {
+        "STANDARD": 0.38,
+        "FLASH": 0.35,
+        "CLEARANCE": 0.1
+      },
+      "HEALTH_VMS": {
+        "STANDARD": 0.28,
+        "FLASH": 0.25,
+        "CLEARANCE": 0.1
+      },
+      "HEALTH_OTC": {
+        "STANDARD": 0.24,
+        "FLASH": null,
+        "CLEARANCE": 0.1
+      },
+      "HEALTH_DEVICES": {
+        "STANDARD": 0.26,
+        "FLASH": null,
+        "CLEARANCE": 0.1
+      },
+      "BEAUTY_SKINCARE": {
+        "STANDARD": 0.32,
+        "FLASH": 0.28,
+        "CLEARANCE": 0.1
+      },
+      "BEAUTY_COSMETICS": {
+        "STANDARD": 0.3,
+        "FLASH": 0.27,
+        "CLEARANCE": 0.1
+      },
+      "BEAUTY_FRAGRANCE": {
+        "STANDARD": 0.28,
+        "FLASH": 0.25,
+        "CLEARANCE": 0.1
+      },
+      "PERSONAL_CARE": {
+        "STANDARD": 0.25,
+        "FLASH": 0.22,
+        "CLEARANCE": 0.1
+      },
+      "BABY_NUTRITION": {
+        "STANDARD": 0.15,
+        "FLASH": null,
+        "CLEARANCE": 0.1
+      },
+      "BABY_CARE": {
+        "STANDARD": 0.18,
+        "FLASH": 0.15,
+        "CLEARANCE": 0.1
+      },
+      "HOUSEHOLD": {
+        "STANDARD": 0.22,
+        "FLASH": 0.2,
+        "CLEARANCE": 0.1
+      }
+    },
+    "workingDayHolidays": [
+      "2026-10-01",
+      "2026-10-19",
+      "2026-12-25",
+      "2026-12-26",
+      "2027-01-01"
+    ],
+    "priceZones": [
+      "HK-STD",
+      "HK-AIRPORT"
+    ],
+    "channels": [
+      "STORE",
+      "ESHOP",
+      "APP",
+      "MARKETPLACE"
+    ],
+    "mechanics": [
+      "PRICE_CUT",
+      "PCT_OFF",
+      "MULTI_BUY_SAVE",
+      "MULTI_BUY_2ND",
+      "BOGO",
+      "GWP",
+      "MEMBER_PRICE",
+      "BONUS_POINTS",
+      "COUPON",
+      "BUNDLE"
+    ],
+    "promotionTypes": [
+      "STANDARD",
+      "FLASH",
+      "LOCAL",
+      "EVENT",
+      "CLEARANCE"
+    ]
+  },
+  "productMaster": [
+    {
+      "itemCode": "WTC-VITC-1000-20",
+      "barcode": "4894532101234",
+      "descriptionEn": "Watsons Vitamin C 1000mg Effervescent 20s",
+      "descriptionZh": "屈臣氏維他命C 1000毫克水溶片 20片",
+      "brand": "Watsons",
+      "ownBrand": true,
+      "supplierCode": "S-WTC-001",
+      "supplierName": "Watsons Own Brand Sourcing",
+      "hierarchy": {
+        "division": "Health",
+        "department": "Vitamins & Supplements",
+        "class": "Vitamin C",
+        "subclass": "Effervescent"
+      },
+      "categoryGroup": "OWN_BRAND",
+      "benchmarkGroup": "OWN_BRAND_VMS",
+      "categoryLeadRole": "CATEGORY_LEAD_HEALTH",
+      "lifecycleStatus": "ACTIVE",
+      "delistDate": null,
+      "regulatoryClass": "HEALTH_SUPPLEMENT",
+      "strategicFlag": "HERO",
+      "approvedClaims": [
+        "Supports normal immune function"
+      ],
+      "channelEligibility": [
+        "STORE",
+        "ESHOP",
+        "APP",
+        "MARKETPLACE"
+      ],
+      "packSize": "20 tablets"
+    },
+    {
+      "itemCode": "WTC-MULTI-60",
+      "barcode": "4894532105678",
+      "descriptionEn": "Watsons Multivitamin & Minerals 60 tablets",
+      "descriptionZh": "屈臣氏綜合維他命礦物質 60粒",
+      "brand": "Watsons",
+      "ownBrand": true,
+      "supplierCode": "S-WTC-001",
+      "supplierName": "Watsons Own Brand Sourcing",
+      "hierarchy": {
+        "division": "Health",
+        "department": "Vitamins & Supplements",
+        "class": "Multivitamins",
+        "subclass": "Adult"
+      },
+      "categoryGroup": "OWN_BRAND",
+      "benchmarkGroup": "OWN_BRAND_VMS",
+      "categoryLeadRole": "CATEGORY_LEAD_HEALTH",
+      "lifecycleStatus": "ACTIVE",
+      "delistDate": null,
+      "regulatoryClass": "HEALTH_SUPPLEMENT",
+      "strategicFlag": "CORE",
+      "approvedClaims": [
+        "Daily nutritional support"
+      ],
+      "channelEligibility": [
+        "STORE",
+        "ESHOP",
+        "APP",
+        "MARKETPLACE"
+      ],
+      "packSize": "60 tablets"
+    },
+    {
+      "itemCode": "GLW-SRM-30ML",
+      "barcode": "8809123400011",
+      "descriptionEn": "Glow Radiance Serum 30ml",
+      "descriptionZh": "Glow 亮采精華 30毫升",
+      "brand": "Glow Beauty",
+      "ownBrand": false,
+      "supplierCode": "S-GLW-114",
+      "supplierName": "Glow Beauty Laboratories (HK) Ltd",
+      "hierarchy": {
+        "division": "Beauty",
+        "department": "Skincare",
+        "class": "Serums",
+        "subclass": "Brightening"
+      },
+      "categoryGroup": "BEAUTY_SKINCARE",
+      "benchmarkGroup": "BEAUTY_SKINCARE",
+      "categoryLeadRole": "CATEGORY_LEAD_BEAUTY",
+      "lifecycleStatus": "ACTIVE",
+      "delistDate": null,
+      "regulatoryClass": "NONE",
+      "strategicFlag": "HERO",
+      "approvedClaims": [
+        "Brightens skin tone"
+      ],
+      "channelEligibility": [
+        "STORE",
+        "ESHOP",
+        "APP"
+      ],
+      "packSize": "30 ml"
+    },
+    {
+      "itemCode": "SUNV-SPF50-100",
+      "barcode": "8809123400028",
+      "descriptionEn": "Sunveil SPF50+ Daily Fluid 100ml",
+      "descriptionZh": "Sunveil SPF50+ 日常防曬乳 100毫升",
+      "brand": "Sunveil",
+      "ownBrand": false,
+      "supplierCode": "S-SUN-208",
+      "supplierName": "Sunveil Dermo-Cosmetics Ltd",
+      "hierarchy": {
+        "division": "Beauty",
+        "department": "Skincare",
+        "class": "Sun Care",
+        "subclass": "Face"
+      },
+      "categoryGroup": "BEAUTY_SKINCARE",
+      "benchmarkGroup": "BEAUTY_SKINCARE",
+      "categoryLeadRole": "CATEGORY_LEAD_BEAUTY",
+      "lifecycleStatus": "ACTIVE",
+      "delistDate": null,
+      "regulatoryClass": "NONE",
+      "strategicFlag": "HERO",
+      "approvedClaims": [
+        "Broad-spectrum UVA/UVB protection"
+      ],
+      "channelEligibility": [
+        "STORE",
+        "ESHOP",
+        "APP"
+      ],
+      "packSize": "100 ml"
+    },
+    {
+      "itemCode": "PURE-IF-S1-900",
+      "barcode": "8809123400035",
+      "descriptionEn": "PureNest Infant Formula Stage 1 (0-6 months) 900g",
+      "descriptionZh": "PureNest 嬰兒配方奶粉 1號 900克",
+      "brand": "PureNest",
+      "ownBrand": false,
+      "supplierCode": "S-PNN-330",
+      "supplierName": "PureNest Nutrition (Asia) Ltd",
+      "hierarchy": {
+        "division": "Baby",
+        "department": "Baby Nutrition",
+        "class": "Infant Formula",
+        "subclass": "Stage 1"
+      },
+      "categoryGroup": "BABY_NUTRITION",
+      "benchmarkGroup": "BABY_NUTRITION",
+      "categoryLeadRole": "CATEGORY_LEAD_BABY",
+      "lifecycleStatus": "ACTIVE",
+      "delistDate": null,
+      "regulatoryClass": "INFANT_FORMULA_S1",
+      "strategicFlag": "CORE",
+      "approvedClaims": [],
+      "channelEligibility": [
+        "STORE",
+        "ESHOP",
+        "APP"
+      ],
+      "packSize": "900 g"
+    },
+    {
+      "itemCode": "PURE-GUM-S3-900",
+      "barcode": "8809123400042",
+      "descriptionEn": "PureNest Growing-Up Milk Stage 3 (1-3 years) 900g",
+      "descriptionZh": "PureNest 幼兒成長奶粉 3號 900克",
+      "brand": "PureNest",
+      "ownBrand": false,
+      "supplierCode": "S-PNN-330",
+      "supplierName": "PureNest Nutrition (Asia) Ltd",
+      "hierarchy": {
+        "division": "Baby",
+        "department": "Baby Nutrition",
+        "class": "Growing-Up Milk",
+        "subclass": "Stage 3"
+      },
+      "categoryGroup": "BABY_NUTRITION",
+      "benchmarkGroup": "BABY_NUTRITION",
+      "categoryLeadRole": "CATEGORY_LEAD_BABY",
+      "lifecycleStatus": "ACTIVE",
+      "delistDate": null,
+      "regulatoryClass": "FORMULA_S3",
+      "strategicFlag": "CORE",
+      "approvedClaims": [],
+      "channelEligibility": [
+        "STORE",
+        "ESHOP",
+        "APP"
+      ],
+      "packSize": "900 g"
+    },
+    {
+      "itemCode": "MEDR-IBU-200-24",
+      "barcode": "8809123400059",
+      "descriptionEn": "MediRelief Ibuprofen 200mg Tablets 24s",
+      "descriptionZh": "MediRelief 布洛芬 200毫克 24片",
+      "brand": "MediRelief",
+      "ownBrand": false,
+      "supplierCode": "S-MRP-115",
+      "supplierName": "MediRelief Pharma (HK) Ltd",
+      "hierarchy": {
+        "division": "Health",
+        "department": "OTC Medicines",
+        "class": "Pain Relief",
+        "subclass": "Ibuprofen"
+      },
+      "categoryGroup": "HEALTH_OTC",
+      "benchmarkGroup": "HEALTH_OTC",
+      "categoryLeadRole": "CATEGORY_LEAD_HEALTH",
+      "lifecycleStatus": "ACTIVE",
+      "delistDate": null,
+      "regulatoryClass": "PHARMACY_ONLY_P1",
+      "strategicFlag": "CORE",
+      "approvedClaims": [
+        "Relief of mild to moderate pain"
+      ],
+      "channelEligibility": [
+        "STORE"
+      ],
+      "packSize": "24 tablets"
+    },
+    {
+      "itemCode": "FRSH-TP-2X150",
+      "barcode": "8809123400066",
+      "descriptionEn": "FreshMint Total Care Toothpaste Twin Pack 2x150g",
+      "descriptionZh": "FreshMint 全效牙膏孖裝 2x150克",
+      "brand": "FreshMint",
+      "ownBrand": false,
+      "supplierCode": "S-FRM-402",
+      "supplierName": "FreshMint Oral Care Ltd",
+      "hierarchy": {
+        "division": "Personal Care",
+        "department": "Oral Care",
+        "class": "Toothpaste",
+        "subclass": "Multipack"
+      },
+      "categoryGroup": "PERSONAL_CARE",
+      "benchmarkGroup": "PERSONAL_CARE",
+      "categoryLeadRole": "CATEGORY_LEAD_PERSONAL_CARE",
+      "lifecycleStatus": "ACTIVE",
+      "delistDate": null,
+      "regulatoryClass": "NONE",
+      "strategicFlag": "CORE",
+      "approvedClaims": [
+        "Cavity protection"
+      ],
+      "channelEligibility": [
+        "STORE",
+        "ESHOP",
+        "APP",
+        "MARKETPLACE"
+      ],
+      "packSize": "2 x 150 g"
+    },
+    {
+      "itemCode": "AQUA-MSK-5P",
+      "barcode": "8809123400073",
+      "descriptionEn": "AquaDew Hydrating Sheet Mask 5pc",
+      "descriptionZh": "AquaDew 保濕面膜 5片",
+      "brand": "AquaDew",
+      "ownBrand": false,
+      "supplierCode": "S-AQD-233",
+      "supplierName": "AquaDew Korea Co. (HK agent)",
+      "hierarchy": {
+        "division": "Beauty",
+        "department": "Skincare",
+        "class": "Masks",
+        "subclass": "Sheet Mask"
+      },
+      "categoryGroup": "BEAUTY_SKINCARE",
+      "benchmarkGroup": "BEAUTY_SKINCARE",
+      "categoryLeadRole": "CATEGORY_LEAD_BEAUTY",
+      "lifecycleStatus": "ACTIVE",
+      "delistDate": null,
+      "regulatoryClass": "NONE",
+      "strategicFlag": "CORE",
+      "approvedClaims": [
+        "Intensive hydration"
+      ],
+      "channelEligibility": [
+        "STORE",
+        "ESHOP",
+        "APP",
+        "MARKETPLACE"
+      ],
+      "packSize": "5 sheets"
+    },
+    {
+      "itemCode": "OMG-FO-1000-100",
+      "barcode": "8809123400080",
+      "descriptionEn": "OceanPure Omega-3 Fish Oil 1000mg 100 capsules",
+      "descriptionZh": "OceanPure 深海魚油 1000毫克 100粒",
+      "brand": "OceanPure",
+      "ownBrand": false,
+      "supplierCode": "S-OCP-127",
+      "supplierName": "OceanPure Nutraceuticals Ltd",
+      "hierarchy": {
+        "division": "Health",
+        "department": "Vitamins & Supplements",
+        "class": "Omega & Fish Oil",
+        "subclass": "Omega-3"
+      },
+      "categoryGroup": "HEALTH_VMS",
+      "benchmarkGroup": "HEALTH_VMS",
+      "categoryLeadRole": "CATEGORY_LEAD_HEALTH",
+      "lifecycleStatus": "ACTIVE",
+      "delistDate": null,
+      "regulatoryClass": "HEALTH_SUPPLEMENT",
+      "strategicFlag": "HERO",
+      "approvedClaims": [
+        "Source of EPA and DHA"
+      ],
+      "channelEligibility": [
+        "STORE",
+        "ESHOP",
+        "APP",
+        "MARKETPLACE"
+      ],
+      "packSize": "100 capsules"
+    },
+    {
+      "itemCode": "DERM-CLN-150",
+      "barcode": "8809123400097",
+      "descriptionEn": "DermaCalm Gentle Cleanser 150ml",
+      "descriptionZh": "DermaCalm 溫和潔面乳 150毫升",
+      "brand": "DermaCalm",
+      "ownBrand": false,
+      "supplierCode": "S-DRC-301",
+      "supplierName": "DermaCalm Laboratories",
+      "hierarchy": {
+        "division": "Beauty",
+        "department": "Skincare",
+        "class": "Cleansers",
+        "subclass": "Sensitive"
+      },
+      "categoryGroup": "BEAUTY_SKINCARE",
+      "benchmarkGroup": "BEAUTY_SKINCARE",
+      "categoryLeadRole": "CATEGORY_LEAD_BEAUTY",
+      "lifecycleStatus": "ACTIVE",
+      "delistDate": null,
+      "regulatoryClass": "NONE",
+      "strategicFlag": "CORE",
+      "approvedClaims": [
+        "Suitable for sensitive skin"
+      ],
+      "channelEligibility": [
+        "STORE",
+        "ESHOP",
+        "APP"
+      ],
+      "packSize": "150 ml"
+    },
+    {
+      "itemCode": "LUMI-TNR-200",
+      "barcode": "8809123400103",
+      "descriptionEn": "Lumiere Balancing Toner 200ml",
+      "descriptionZh": "Lumière 平衡爽膚水 200毫升",
+      "brand": "Lumière Paris",
+      "ownBrand": false,
+      "supplierCode": "S-LUM-119",
+      "supplierName": "Lumière Paris Asia Ltd",
+      "hierarchy": {
+        "division": "Beauty",
+        "department": "Skincare",
+        "class": "Toners",
+        "subclass": "Balancing"
+      },
+      "categoryGroup": "BEAUTY_SKINCARE",
+      "benchmarkGroup": "BEAUTY_SKINCARE",
+      "categoryLeadRole": "CATEGORY_LEAD_BEAUTY",
+      "lifecycleStatus": "ACTIVE",
+      "delistDate": null,
+      "regulatoryClass": "NONE",
+      "strategicFlag": "HERO",
+      "approvedClaims": [
+        "Balances and refreshes"
+      ],
+      "channelEligibility": [
+        "STORE",
+        "ESHOP",
+        "APP"
+      ],
+      "packSize": "200 ml"
+    },
+    {
+      "itemCode": "BLSM-LIP-4G",
+      "barcode": "8809123400110",
+      "descriptionEn": "Blossom Tint Lip Balm 4g",
+      "descriptionZh": "Blossom 潤色潤唇膏 4克",
+      "brand": "Blossom",
+      "ownBrand": false,
+      "supplierCode": "S-BLM-210",
+      "supplierName": "Blossom Cosmetics Ltd",
+      "hierarchy": {
+        "division": "Beauty",
+        "department": "Cosmetics",
+        "class": "Lips",
+        "subclass": "Lip Balm"
+      },
+      "categoryGroup": "BEAUTY_COSMETICS",
+      "benchmarkGroup": "BEAUTY_COSMETICS",
+      "categoryLeadRole": "CATEGORY_LEAD_BEAUTY",
+      "lifecycleStatus": "PHASE_OUT",
+      "delistDate": "2026-11-30",
+      "regulatoryClass": "NONE",
+      "strategicFlag": "CORE",
+      "approvedClaims": [],
+      "channelEligibility": [
+        "STORE",
+        "ESHOP",
+        "APP"
+      ],
+      "packSize": "4 g"
+    },
+    {
+      "itemCode": "KIND-DPR-M64",
+      "barcode": "8809123400127",
+      "descriptionEn": "KinderSoft Nappies Size M 64s",
+      "descriptionZh": "KinderSoft 嬰兒紙尿片 中碼 64片",
+      "brand": "KinderSoft",
+      "ownBrand": false,
+      "supplierCode": "S-KDS-140",
+      "supplierName": "KinderSoft Hygiene Products Ltd",
+      "hierarchy": {
+        "division": "Baby",
+        "department": "Baby Care",
+        "class": "Nappies",
+        "subclass": "Size M"
+      },
+      "categoryGroup": "BABY_CARE",
+      "benchmarkGroup": "BABY_CARE",
+      "categoryLeadRole": "CATEGORY_LEAD_BABY",
+      "lifecycleStatus": "ACTIVE",
+      "delistDate": null,
+      "regulatoryClass": "NONE",
+      "strategicFlag": "CORE",
+      "approvedClaims": [],
+      "channelEligibility": [
+        "STORE",
+        "ESHOP",
+        "APP",
+        "MARKETPLACE"
+      ],
+      "packSize": "64 pieces"
+    }
+  ],
+  "erpPrices": [
+    {
+      "itemCode": "WTC-VITC-1000-20",
+      "priceZone": "HK-STD",
+      "regularPrice": 129.0,
+      "effectiveFrom": "2026-03-01",
+      "history": [
+        {
+          "price": 119.0,
+          "effectiveFrom": "2025-06-01",
+          "effectiveTo": "2026-02-28"
+        }
+      ]
+    },
+    {
+      "itemCode": "WTC-MULTI-60",
+      "priceZone": "HK-STD",
+      "regularPrice": 159.0,
+      "effectiveFrom": "2026-01-01",
+      "history": [
+        {
+          "price": 149.0,
+          "effectiveFrom": "2025-01-01",
+          "effectiveTo": "2025-12-31"
+        }
+      ]
+    },
+    {
+      "itemCode": "GLW-SRM-30ML",
+      "priceZone": "HK-STD",
+      "regularPrice": 199.0,
+      "effectiveFrom": "2026-02-01",
+      "history": [
+        {
+          "price": 189.0,
+          "effectiveFrom": "2025-02-01",
+          "effectiveTo": "2026-01-31"
+        }
+      ]
+    },
+    {
+      "itemCode": "SUNV-SPF50-100",
+      "priceZone": "HK-STD",
+      "regularPrice": 145.0,
+      "effectiveFrom": "2025-11-01",
+      "history": [
+        {
+          "price": 139.0,
+          "effectiveFrom": "2024-11-01",
+          "effectiveTo": "2025-10-31"
+        }
+      ]
+    },
+    {
+      "itemCode": "PURE-IF-S1-900",
+      "priceZone": "HK-STD",
+      "regularPrice": 398.0,
+      "effectiveFrom": "2026-01-01",
+      "history": []
+    },
+    {
+      "itemCode": "PURE-GUM-S3-900",
+      "priceZone": "HK-STD",
+      "regularPrice": 328.0,
+      "effectiveFrom": "2026-01-01",
+      "history": []
+    },
+    {
+      "itemCode": "MEDR-IBU-200-24",
+      "priceZone": "HK-STD",
+      "regularPrice": 48.0,
+      "effectiveFrom": "2026-01-01",
+      "history": []
+    },
+    {
+      "itemCode": "FRSH-TP-2X150",
+      "priceZone": "HK-STD",
+      "regularPrice": 59.9,
+      "effectiveFrom": "2026-09-18",
+      "history": [
+        {
+          "price": 54.9,
+          "effectiveFrom": "2026-01-01",
+          "effectiveTo": "2026-09-17"
+        }
+      ]
+    },
+    {
+      "itemCode": "AQUA-MSK-5P",
+      "priceZone": "HK-STD",
+      "regularPrice": 89.0,
+      "effectiveFrom": "2025-09-01",
+      "history": []
+    },
+    {
+      "itemCode": "OMG-FO-1000-100",
+      "priceZone": "HK-STD",
+      "regularPrice": 259.0,
+      "effectiveFrom": "2026-01-01",
+      "history": [
+        {
+          "price": 249.0,
+          "effectiveFrom": "2025-01-01",
+          "effectiveTo": "2025-12-31"
+        }
+      ]
+    },
+    {
+      "itemCode": "DERM-CLN-150",
+      "priceZone": "HK-STD",
+      "regularPrice": 119.0,
+      "effectiveFrom": "2026-01-01",
+      "history": []
+    },
+    {
+      "itemCode": "LUMI-TNR-200",
+      "priceZone": "HK-STD",
+      "regularPrice": 159.0,
+      "effectiveFrom": "2026-01-01",
+      "history": []
+    },
+    {
+      "itemCode": "BLSM-LIP-4G",
+      "priceZone": "HK-STD",
+      "regularPrice": 69.0,
+      "effectiveFrom": "2025-06-01",
+      "history": []
+    },
+    {
+      "itemCode": "KIND-DPR-M64",
+      "priceZone": "HK-STD",
+      "regularPrice": 189.0,
+      "effectiveFrom": "2026-01-01",
+      "history": []
+    }
+  ],
+  "erpCosts": [
+    {
+      "itemCode": "WTC-VITC-1000-20",
+      "landedCost": 55.0,
+      "costEffectiveFrom": "2026-09-01",
+      "previous": 56.8,
+      "offInvoice": []
+    },
+    {
+      "itemCode": "WTC-MULTI-60",
+      "landedCost": 62.0,
+      "costEffectiveFrom": "2026-01-01",
+      "previous": null,
+      "offInvoice": []
+    },
+    {
+      "itemCode": "GLW-SRM-30ML",
+      "landedCost": 82.0,
+      "costEffectiveFrom": "2026-02-01",
+      "previous": null,
+      "offInvoice": []
+    },
+    {
+      "itemCode": "SUNV-SPF50-100",
+      "landedCost": 112.0,
+      "costEffectiveFrom": "2026-04-01",
+      "previous": 96.0,
+      "offInvoice": []
+    },
+    {
+      "itemCode": "PURE-IF-S1-900",
+      "landedCost": 330.0,
+      "costEffectiveFrom": "2026-01-01",
+      "previous": null,
+      "offInvoice": []
+    },
+    {
+      "itemCode": "PURE-GUM-S3-900",
+      "landedCost": 262.0,
+      "costEffectiveFrom": "2026-01-01",
+      "previous": null,
+      "offInvoice": []
+    },
+    {
+      "itemCode": "MEDR-IBU-200-24",
+      "landedCost": 26.0,
+      "costEffectiveFrom": "2026-01-01",
+      "previous": null,
+      "offInvoice": []
+    },
+    {
+      "itemCode": "FRSH-TP-2X150",
+      "landedCost": 30.0,
+      "costEffectiveFrom": "2026-07-01",
+      "previous": 28.5,
+      "offInvoice": [
+        {
+          "fundingRef": "FC-2026-049",
+          "amountPerUnit": 4.0,
+          "periodFrom": "2026-10-01",
+          "periodTo": "2026-10-31",
+          "status": "CONFIRMED"
+        }
+      ]
+    },
+    {
+      "itemCode": "AQUA-MSK-5P",
+      "landedCost": 41.0,
+      "costEffectiveFrom": "2026-01-01",
+      "previous": null,
+      "offInvoice": []
+    },
+    {
+      "itemCode": "OMG-FO-1000-100",
+      "landedCost": 150.0,
+      "costEffectiveFrom": "2026-01-01",
+      "previous": null,
+      "offInvoice": []
+    },
+    {
+      "itemCode": "DERM-CLN-150",
+      "landedCost": 52.0,
+      "costEffectiveFrom": "2026-01-01",
+      "previous": null,
+      "offInvoice": []
+    },
+    {
+      "itemCode": "LUMI-TNR-200",
+      "landedCost": 70.0,
+      "costEffectiveFrom": "2026-01-01",
+      "previous": null,
+      "offInvoice": []
+    },
+    {
+      "itemCode": "BLSM-LIP-4G",
+      "landedCost": 28.0,
+      "costEffectiveFrom": "2025-06-01",
+      "previous": null,
+      "offInvoice": []
+    },
+    {
+      "itemCode": "KIND-DPR-M64",
+      "landedCost": 152.0,
+      "costEffectiveFrom": "2026-01-01",
+      "previous": null,
+      "offInvoice": []
+    }
+  ],
+  "insightsPerformance": [
+    {
+      "itemCode": "WTC-VITC-1000-20",
+      "scopes": {
+        "HK-ALL": {
+          "baselineWeeklyUnits": 1750,
+          "channelSplit": {
+            "STORE": 1330,
+            "ESHOP": 250,
+            "APP": 170
+          }
+        },
+        "PILOT-20": {
+          "baselineWeeklyUnits": 160,
+          "channelSplit": {
+            "STORE": 160
+          }
+        }
+      },
+      "promoWeeksLast12ByChannel": {
+        "STORE": 2,
+        "ESHOP": 2,
+        "APP": 2
+      },
+      "lastPromoUplift": 2.9
+    },
+    {
+      "itemCode": "WTC-MULTI-60",
+      "scopes": {
+        "HK-ALL": {
+          "baselineWeeklyUnits": 900,
+          "channelSplit": {
+            "STORE": 700,
+            "ESHOP": 120,
+            "APP": 80
+          }
+        }
+      },
+      "promoWeeksLast12ByChannel": {
+        "STORE": 0,
+        "ESHOP": 0,
+        "APP": 0
+      },
+      "lastPromoUplift": null
+    },
+    {
+      "itemCode": "GLW-SRM-30ML",
+      "scopes": {
+        "HK-ALL": {
+          "baselineWeeklyUnits": 980,
+          "channelSplit": {
+            "STORE": 760,
+            "ESHOP": 140,
+            "APP": 80
+          }
+        },
+        "HKI-KLNE": {
+          "baselineWeeklyUnits": 380,
+          "channelSplit": {
+            "STORE": 380
+          }
+        },
+        "HKI-CORE": {
+          "baselineWeeklyUnits": 220,
+          "channelSplit": {
+            "STORE": 220
+          }
+        },
+        "KLN-EAST": {
+          "baselineWeeklyUnits": 160,
+          "channelSplit": {
+            "STORE": 160
+          }
+        }
+      },
+      "promoWeeksLast12ByChannel": {
+        "STORE": 4,
+        "ESHOP": 4,
+        "APP": 4
+      },
+      "lastPromoUplift": 2.4
+    },
+    {
+      "itemCode": "SUNV-SPF50-100",
+      "scopes": {
+        "HK-ALL": {
+          "baselineWeeklyUnits": 620,
+          "channelSplit": {
+            "STORE": 470,
+            "ESHOP": 90,
+            "APP": 60
+          }
+        }
+      },
+      "promoWeeksLast12ByChannel": {
+        "STORE": 6,
+        "ESHOP": 6,
+        "APP": 7
+      },
+      "lastPromoUplift": 2.0
+    },
+    {
+      "itemCode": "PURE-IF-S1-900",
+      "scopes": {
+        "HK-ALL": {
+          "baselineWeeklyUnits": 520,
+          "channelSplit": {
+            "STORE": 400,
+            "ESHOP": 80,
+            "APP": 40
+          }
+        }
+      },
+      "promoWeeksLast12ByChannel": {
+        "STORE": 0,
+        "ESHOP": 0,
+        "APP": 0
+      },
+      "lastPromoUplift": null
+    },
+    {
+      "itemCode": "PURE-GUM-S3-900",
+      "scopes": {
+        "HK-ALL": {
+          "baselineWeeklyUnits": 410,
+          "channelSplit": {
+            "STORE": 320,
+            "ESHOP": 60,
+            "APP": 30
+          }
+        }
+      },
+      "promoWeeksLast12ByChannel": {
+        "STORE": 0,
+        "ESHOP": 0,
+        "APP": 0
+      },
+      "lastPromoUplift": null
+    },
+    {
+      "itemCode": "MEDR-IBU-200-24",
+      "scopes": {
+        "HK-ALL": {
+          "baselineWeeklyUnits": 2100,
+          "channelSplit": {
+            "STORE": 2100
+          }
+        }
+      },
+      "promoWeeksLast12ByChannel": {
+        "STORE": 0
+      },
+      "lastPromoUplift": null
+    },
+    {
+      "itemCode": "FRSH-TP-2X150",
+      "scopes": {
+        "HK-ALL": {
+          "baselineWeeklyUnits": 2600,
+          "channelSplit": {
+            "STORE": 2200,
+            "ESHOP": 250,
+            "APP": 150
+          }
+        },
+        "HKI-CORE": {
+          "baselineWeeklyUnits": 520,
+          "channelSplit": {
+            "STORE": 520
+          }
+        }
+      },
+      "promoWeeksLast12ByChannel": {
+        "STORE": 0,
+        "ESHOP": 0,
+        "APP": 0
+      },
+      "lastPromoUplift": null
+    },
+    {
+      "itemCode": "AQUA-MSK-5P",
+      "scopes": {
+        "HK-ALL": {
+          "baselineWeeklyUnits": 1900,
+          "channelSplit": {
+            "STORE": 1300,
+            "ESHOP": 350,
+            "APP": 250
+          }
+        }
+      },
+      "promoWeeksLast12ByChannel": {
+        "STORE": 2,
+        "ESHOP": 2,
+        "APP": 3
+      },
+      "lastPromoUplift": 2.1
+    },
+    {
+      "itemCode": "OMG-FO-1000-100",
+      "scopes": {
+        "HK-ALL": {
+          "baselineWeeklyUnits": 520,
+          "channelSplit": {
+            "STORE": 380,
+            "ESHOP": 90,
+            "APP": 50
+          }
+        }
+      },
+      "promoWeeksLast12ByChannel": {
+        "STORE": 0,
+        "ESHOP": 0,
+        "APP": 0
+      },
+      "lastPromoUplift": null
+    },
+    {
+      "itemCode": "DERM-CLN-150",
+      "scopes": {
+        "HK-ALL": {
+          "baselineWeeklyUnits": 640,
+          "channelSplit": {
+            "STORE": 480,
+            "ESHOP": 100,
+            "APP": 60
+          }
+        }
+      },
+      "promoWeeksLast12ByChannel": {
+        "STORE": 0,
+        "ESHOP": 0,
+        "APP": 0
+      },
+      "lastPromoUplift": null
+    },
+    {
+      "itemCode": "LUMI-TNR-200",
+      "scopes": {
+        "HK-ALL": {
+          "baselineWeeklyUnits": 450,
+          "channelSplit": {
+            "STORE": 340,
+            "ESHOP": 70,
+            "APP": 40
+          }
+        }
+      },
+      "promoWeeksLast12ByChannel": {
+        "STORE": 0,
+        "ESHOP": 0,
+        "APP": 0
+      },
+      "lastPromoUplift": null
+    },
+    {
+      "itemCode": "BLSM-LIP-4G",
+      "scopes": {
+        "HK-ALL": {
+          "baselineWeeklyUnits": 700,
+          "channelSplit": {
+            "STORE": 560,
+            "ESHOP": 90,
+            "APP": 50
+          }
+        }
+      },
+      "promoWeeksLast12ByChannel": {
+        "STORE": 0,
+        "ESHOP": 0,
+        "APP": 0
+      },
+      "lastPromoUplift": null
+    },
+    {
+      "itemCode": "KIND-DPR-M64",
+      "scopes": {
+        "HK-ALL": {
+          "baselineWeeklyUnits": 480,
+          "channelSplit": {
+            "STORE": 330,
+            "ESHOP": 100,
+            "APP": 50
+          }
+        }
+      },
+      "promoWeeksLast12ByChannel": {
+        "STORE": 0,
+        "ESHOP": 0,
+        "APP": 0
+      },
+      "lastPromoUplift": null
+    }
+  ],
+  "insightsStock": [
+    {
+      "itemCode": "WTC-VITC-1000-20",
+      "stockOnHand": 14200,
+      "inbound": [
+        {
+          "qty": 6000,
+          "eta": "2026-10-05",
+          "status": "CONFIRMED"
+        }
+      ]
+    },
+    {
+      "itemCode": "WTC-MULTI-60",
+      "stockOnHand": 8300,
+      "inbound": [
+        {
+          "qty": 3000,
+          "eta": "2026-10-20",
+          "status": "CONFIRMED"
+        }
+      ]
+    },
+    {
+      "itemCode": "GLW-SRM-30ML",
+      "stockOnHand": 5400,
+      "inbound": [
+        {
+          "qty": 2000,
+          "eta": "2026-10-15",
+          "status": "CONFIRMED"
+        }
+      ]
+    },
+    {
+      "itemCode": "SUNV-SPF50-100",
+      "stockOnHand": 6100,
+      "inbound": []
+    },
+    {
+      "itemCode": "PURE-IF-S1-900",
+      "stockOnHand": 4100,
+      "inbound": []
+    },
+    {
+      "itemCode": "PURE-GUM-S3-900",
+      "stockOnHand": 3600,
+      "inbound": [
+        {
+          "qty": 1500,
+          "eta": "2026-10-10",
+          "status": "CONFIRMED"
+        }
+      ]
+    },
+    {
+      "itemCode": "MEDR-IBU-200-24",
+      "stockOnHand": 18000,
+      "inbound": []
+    },
+    {
+      "itemCode": "FRSH-TP-2X150",
+      "stockOnHand": 9600,
+      "inbound": [
+        {
+          "qty": 5000,
+          "eta": "2026-10-03",
+          "status": "CONFIRMED"
+        }
+      ]
+    },
+    {
+      "itemCode": "AQUA-MSK-5P",
+      "stockOnHand": 9800,
+      "inbound": [
+        {
+          "qty": 4000,
+          "eta": "2026-10-12",
+          "status": "CONFIRMED"
+        }
+      ]
+    },
+    {
+      "itemCode": "OMG-FO-1000-100",
+      "stockOnHand": 2900,
+      "inbound": [
+        {
+          "qty": 2400,
+          "eta": "2026-11-10",
+          "status": "CONFIRMED",
+          "expediteOption": {
+            "eta": "2026-11-01",
+            "costHkd": 3000,
+            "confirmBy": "2026-10-10"
+          }
+        }
+      ]
+    },
+    {
+      "itemCode": "DERM-CLN-150",
+      "stockOnHand": 5200,
+      "inbound": [
+        {
+          "qty": 2000,
+          "eta": "2026-10-14",
+          "status": "CONFIRMED"
+        }
+      ]
+    },
+    {
+      "itemCode": "LUMI-TNR-200",
+      "stockOnHand": 3900,
+      "inbound": []
+    },
+    {
+      "itemCode": "BLSM-LIP-4G",
+      "stockOnHand": 6200,
+      "inbound": []
+    },
+    {
+      "itemCode": "KIND-DPR-M64",
+      "stockOnHand": 4400,
+      "inbound": [
+        {
+          "qty": 2000,
+          "eta": "2026-10-08",
+          "status": "CONFIRMED"
+        }
+      ]
+    }
+  ],
+  "benchmarks": {
+    "uplift": {
+      "OWN_BRAND_VMS": {
+        "PRICE_CUT": 3.0,
+        "MULTI_BUY_SAVE": 2.4,
+        "MULTI_BUY_2ND": 2.2,
+        "GWP": 1.8,
+        "FLASH": 4.5
+      },
+      "HEALTH_VMS": {
+        "PRICE_CUT": 2.8,
+        "MULTI_BUY_SAVE": 2.2,
+        "MULTI_BUY_2ND": 2.0,
+        "GWP": 1.7,
+        "FLASH": 4.5
+      },
+      "HEALTH_OTC": {
+        "PRICE_CUT": 1.8,
+        "MULTI_BUY_SAVE": 1.5
+      },
+      "BEAUTY_SKINCARE": {
+        "PRICE_CUT": 2.2,
+        "MULTI_BUY_SAVE": 1.9,
+        "MULTI_BUY_2ND": 2.1,
+        "GWP": 1.6,
+        "FLASH": 4.5
+      },
+      "BEAUTY_COSMETICS": {
+        "PRICE_CUT": 2.0,
+        "MULTI_BUY_SAVE": 1.8,
+        "MULTI_BUY_2ND": 2.0,
+        "GWP": 1.7,
+        "FLASH": 4.0
+      },
+      "PERSONAL_CARE": {
+        "PRICE_CUT": 1.9,
+        "MULTI_BUY_SAVE": 1.7,
+        "MULTI_BUY_2ND": 1.8,
+        "GWP": 1.4,
+        "FLASH": 3.5
+      },
+      "BABY_CARE": {
+        "PRICE_CUT": 1.6,
+        "MULTI_BUY_SAVE": 1.5,
+        "MULTI_BUY_2ND": 1.6,
+        "GWP": 1.3,
+        "FLASH": 3.0
+      },
+      "BABY_NUTRITION": {
+        "PRICE_CUT": 1.5,
+        "MULTI_BUY_SAVE": 1.3
+      },
+      "HOUSEHOLD": {
+        "PRICE_CUT": 1.7,
+        "MULTI_BUY_SAVE": 1.6,
+        "MULTI_BUY_2ND": 1.7,
+        "GWP": 1.3,
+        "FLASH": 3.0
+      }
+    },
+    "modifiers": [
+      {
+        "code": "DEPTH_ABOVE_35",
+        "adjust": 0.3
+      },
+      {
+        "code": "DEPTH_BELOW_20",
+        "adjust": -0.4
+      },
+      {
+        "code": "EVENT_SD1111",
+        "multiply": 1.4
+      },
+      {
+        "code": "EVENT_BF26",
+        "multiply": 1.3
+      },
+      {
+        "code": "LEAFLET",
+        "adjust": 0.2
+      },
+      {
+        "code": "LOCAL_SCOPE_LT_30",
+        "adjust": -0.2
+      },
+      {
+        "code": "HERO",
+        "adjust": 0.2
+      }
+    ],
+    "source": "WTCHK-TM-PPE-2026-C19 Part 2"
+  },
+  "storeScopes": [
+    {
+      "scopeCode": "HK-ALL",
+      "name": "All Hong Kong stores (excl. airport)",
+      "storeCount": 218,
+      "priceZones": [
+        "HK-STD"
+      ],
+      "formats": [
+        "STANDARD",
+        "FLAGSHIP",
+        "MTR_KIOSK"
+      ]
+    },
+    {
+      "scopeCode": "HKI-CORE",
+      "name": "Hong Kong Island Core",
+      "storeCount": 42,
+      "priceZones": [
+        "HK-STD"
+      ],
+      "formats": [
+        "STANDARD",
+        "FLAGSHIP"
+      ]
+    },
+    {
+      "scopeCode": "KLN-EAST",
+      "name": "Kowloon East",
+      "storeCount": 36,
+      "priceZones": [
+        "HK-STD"
+      ],
+      "formats": [
+        "STANDARD"
+      ]
+    },
+    {
+      "scopeCode": "KLN-WEST",
+      "name": "Kowloon West",
+      "storeCount": 31,
+      "priceZones": [
+        "HK-STD"
+      ],
+      "formats": [
+        "STANDARD",
+        "MTR_KIOSK"
+      ]
+    },
+    {
+      "scopeCode": "NT-WEST",
+      "name": "New Territories West",
+      "storeCount": 30,
+      "priceZones": [
+        "HK-STD"
+      ],
+      "formats": [
+        "STANDARD"
+      ]
+    },
+    {
+      "scopeCode": "NT-EAST",
+      "name": "New Territories East",
+      "storeCount": 28,
+      "priceZones": [
+        "HK-STD"
+      ],
+      "formats": [
+        "STANDARD"
+      ]
+    },
+    {
+      "scopeCode": "MTR-KIOSK",
+      "name": "MTR station kiosks",
+      "storeCount": 18,
+      "priceZones": [
+        "HK-STD"
+      ],
+      "formats": [
+        "MTR_KIOSK"
+      ]
+    },
+    {
+      "scopeCode": "FLAGSHIP",
+      "name": "Flagship stores",
+      "storeCount": 6,
+      "priceZones": [
+        "HK-STD"
+      ],
+      "formats": [
+        "FLAGSHIP"
+      ]
+    },
+    {
+      "scopeCode": "HKI-KLNE",
+      "name": "Hong Kong Island Core + Kowloon East",
+      "storeCount": 78,
+      "priceZones": [
+        "HK-STD"
+      ],
+      "formats": [
+        "STANDARD",
+        "FLAGSHIP"
+      ],
+      "composedOf": [
+        "HKI-CORE",
+        "KLN-EAST"
+      ]
+    },
+    {
+      "scopeCode": "PILOT-20",
+      "name": "Pilot cluster (20 stores, HKI-CORE + KLN-EAST subset)",
+      "storeCount": 20,
+      "priceZones": [
+        "HK-STD"
+      ],
+      "formats": [
+        "STANDARD"
+      ],
+      "subsetOf": "HKI-KLNE"
+    },
+    {
+      "scopeCode": "AIRPORT",
+      "name": "Airport stores",
+      "storeCount": 3,
+      "priceZones": [
+        "HK-AIRPORT"
+      ],
+      "formats": [
+        "AIRPORT"
+      ]
+    },
+    {
+      "scopeCode": "PILOT-X",
+      "name": "(invalid example — not defined)",
+      "storeCount": 0,
+      "priceZones": [],
+      "formats": [],
+      "invalid": true
+    }
+  ],
+  "promoCycles": [
+    {
+      "cycleCode": "C20",
+      "startDate": "2026-09-24",
+      "endDate": "2026-10-07",
+      "cutoffs": {
+        "leaflet": "2026-09-03",
+        "digital": "2026-09-14",
+        "inStore": "2026-09-17",
+        "flashWorkingDays": 3
+      },
+      "eventCodes": [
+        "MAF26"
+      ]
+    },
+    {
+      "cycleCode": "C21",
+      "startDate": "2026-10-08",
+      "endDate": "2026-10-21",
+      "cutoffs": {
+        "leaflet": "2026-09-17",
+        "digital": "2026-09-28",
+        "inStore": "2026-10-01",
+        "flashWorkingDays": 3
+      },
+      "eventCodes": []
+    },
+    {
+      "cycleCode": "C22",
+      "startDate": "2026-10-22",
+      "endDate": "2026-11-04",
+      "cutoffs": {
+        "leaflet": "2026-10-01",
+        "digital": "2026-10-12",
+        "inStore": "2026-10-15",
+        "flashWorkingDays": 3
+      },
+      "eventCodes": [
+        "HLTH26"
+      ]
+    },
+    {
+      "cycleCode": "C23",
+      "startDate": "2026-11-05",
+      "endDate": "2026-11-18",
+      "cutoffs": {
+        "leaflet": "2026-10-15",
+        "digital": "2026-10-26",
+        "inStore": "2026-10-29",
+        "flashWorkingDays": 3
+      },
+      "eventCodes": [
+        "SD1111"
+      ]
+    },
+    {
+      "cycleCode": "C24",
+      "startDate": "2026-11-19",
+      "endDate": "2026-12-02",
+      "cutoffs": {
+        "leaflet": "2026-10-29",
+        "digital": "2026-11-09",
+        "inStore": "2026-11-12",
+        "flashWorkingDays": 3
+      },
+      "eventCodes": [
+        "BF26"
+      ]
+    },
+    {
+      "cycleCode": "C25",
+      "startDate": "2026-12-03",
+      "endDate": "2026-12-16",
+      "cutoffs": {
+        "leaflet": "2026-11-12",
+        "digital": "2026-11-23",
+        "inStore": "2026-11-26",
+        "flashWorkingDays": 3
+      },
+      "eventCodes": [
+        "XMAS26"
+      ]
+    },
+    {
+      "cycleCode": "C26",
+      "startDate": "2026-12-17",
+      "endDate": "2026-12-30",
+      "cutoffs": {
+        "leaflet": "2026-11-26",
+        "digital": "2026-12-07",
+        "inStore": "2026-12-10",
+        "flashWorkingDays": 3
+      },
+      "eventCodes": [
+        "XMAS26"
+      ]
+    },
+    {
+      "cycleCode": "C27",
+      "startDate": "2026-12-31",
+      "endDate": "2027-01-13",
+      "cutoffs": {
+        "leaflet": "2026-12-10",
+        "digital": "2026-12-21",
+        "inStore": "2026-12-24",
+        "flashWorkingDays": 3
+      },
+      "eventCodes": [
+        "NY27"
+      ]
+    },
+    {
+      "cycleCode": "C28",
+      "startDate": "2027-01-14",
+      "endDate": "2027-01-27",
+      "cutoffs": {
+        "leaflet": "2026-12-24",
+        "digital": "2027-01-04",
+        "inStore": "2027-01-07",
+        "flashWorkingDays": 3
+      },
+      "eventCodes": [
+        "CNY27"
+      ]
+    }
+  ],
+  "eventCodes": [
+    {
+      "code": "MAF26",
+      "window": [
+        "2026-09-18",
+        "2026-09-25"
+      ]
+    },
+    {
+      "code": "HLTH26",
+      "window": [
+        "2026-10-22",
+        "2026-11-04"
+      ]
+    },
+    {
+      "code": "SD1111",
+      "window": [
+        "2026-11-09",
+        "2026-11-12"
+      ],
+      "upliftMultiplier": 1.4
+    },
+    {
+      "code": "BF26",
+      "window": [
+        "2026-11-27",
+        "2026-11-29"
+      ],
+      "upliftMultiplier": 1.3
+    },
+    {
+      "code": "XMAS26",
+      "window": [
+        "2026-12-03",
+        "2026-12-30"
+      ]
+    },
+    {
+      "code": "NY27",
+      "window": [
+        "2026-12-31",
+        "2027-01-03"
+      ]
+    },
+    {
+      "code": "CNY27",
+      "window": [
+        "2027-01-14",
+        "2027-02-05"
+      ]
+    }
+  ],
+  "blackouts": [
+    {
+      "from": "2027-01-03",
+      "to": "2027-01-04",
+      "reason": "Annual stocktake — no price file releases"
+    }
+  ],
+  "promotions": [
+    {
+      "promotionId": "PR-2026-0871",
+      "name": "Glow Serum Cycle Promo",
+      "itemCodes": [
+        "GLW-SRM-30ML"
+      ],
+      "mechanic": "PRICE_CUT",
+      "promotionalPrice": 159.0,
+      "channels": [
+        "STORE",
+        "ESHOP",
+        "APP"
+      ],
+      "storeScope": "HK-ALL",
+      "startDate": "2026-07-30",
+      "endDate": "2026-08-26",
+      "cycles": [
+        "C17",
+        "C18"
+      ],
+      "status": "ENDED",
+      "caseRef": "PR-2026-0871"
+    },
+    {
+      "promotionId": "PM-2026-1150",
+      "name": "AquaDew Mask Cycle Promo",
+      "itemCodes": [
+        "AQUA-MSK-5P"
+      ],
+      "mechanic": "PRICE_CUT",
+      "promotionalPrice": 75.0,
+      "channels": [
+        "STORE",
+        "ESHOP",
+        "APP"
+      ],
+      "storeScope": "HK-ALL",
+      "startDate": "2026-08-13",
+      "endDate": "2026-08-26",
+      "cycles": [
+        "C18"
+      ],
+      "status": "ENDED",
+      "caseRef": "PR-2026-0902"
+    },
+    {
+      "promotionId": "PM-2026-1180",
+      "name": "Skincare Member Day — 2nd item 50% off",
+      "itemCodes": [
+        "SUNV-SPF50-100",
+        "DERM-CLN-150",
+        "LUMI-TNR-200"
+      ],
+      "mechanic": "MULTI_BUY_2ND",
+      "discountPct": 50,
+      "channels": [
+        "APP",
+        "ESHOP"
+      ],
+      "storeScope": null,
+      "startDate": "2026-10-22",
+      "endDate": "2026-11-04",
+      "cycles": [
+        "C22"
+      ],
+      "status": "APPROVED",
+      "caseRef": "PR-2026-0988"
+    },
+    {
+      "promotionId": "PM-2026-1193",
+      "name": "Health Week — Vitamin C",
+      "itemCodes": [
+        "WTC-VITC-1000-20"
+      ],
+      "mechanic": "PRICE_CUT",
+      "promotionalPrice": 99.0,
+      "channels": [
+        "STORE",
+        "ESHOP",
+        "APP"
+      ],
+      "storeScope": "HK-ALL",
+      "startDate": "2026-08-27",
+      "endDate": "2026-09-09",
+      "cycles": [
+        "C19"
+      ],
+      "status": "ENDED",
+      "caseRef": "PR-2026-0921"
+    },
+    {
+      "promotionId": "PM-2026-1207",
+      "name": "AquaDew App Flash",
+      "itemCodes": [
+        "AQUA-MSK-5P"
+      ],
+      "mechanic": "PRICE_CUT",
+      "promotionalPrice": 59.0,
+      "channels": [
+        "APP"
+      ],
+      "storeScope": null,
+      "startDate": "2026-10-03",
+      "endDate": "2026-10-04",
+      "cycles": [],
+      "type": "FLASH",
+      "status": "APPROVED",
+      "caseRef": "PR-2026-1011"
+    },
+    {
+      "promotionId": "PM-2026-1224",
+      "name": "Summer Sun Care",
+      "itemCodes": [
+        "SUNV-SPF50-100"
+      ],
+      "mechanic": "PRICE_CUT",
+      "promotionalPrice": 119.0,
+      "channels": [
+        "STORE",
+        "ESHOP",
+        "APP"
+      ],
+      "storeScope": "HK-ALL",
+      "startDate": "2026-07-30",
+      "endDate": "2026-09-09",
+      "cycles": [
+        "C17",
+        "C18",
+        "C19"
+      ],
+      "status": "ENDED",
+      "caseRef": "PR-2026-0855"
+    },
+    {
+      "promotionId": "PM-2026-1231",
+      "name": "Sunveil App Flash",
+      "itemCodes": [
+        "SUNV-SPF50-100"
+      ],
+      "mechanic": "PRICE_CUT",
+      "promotionalPrice": 99.0,
+      "channels": [
+        "APP"
+      ],
+      "storeScope": null,
+      "startDate": "2026-09-12",
+      "endDate": "2026-09-12",
+      "cycles": [],
+      "type": "FLASH",
+      "status": "ENDED",
+      "caseRef": "PR-2026-0967"
+    }
+  ],
+  "fundingCommitments": [
+    {
+      "fundingRef": "FC-2026-033",
+      "supplierCode": "S-SUN-208",
+      "supplierName": "Sunveil Dermo-Cosmetics Ltd",
+      "itemCodes": [
+        "SUNV-SPF50-100"
+      ],
+      "fundingType": "LUMP_SUM",
+      "amount": 30000.0,
+      "fundedCap": null,
+      "periodFrom": "2026-07-01",
+      "periodTo": "2026-08-31",
+      "channels": [
+        "STORE",
+        "ESHOP",
+        "APP"
+      ],
+      "status": "EXPIRED",
+      "evidenceRef": "EV-2026-0412",
+      "authorisedContact": "Marco Tse",
+      "notes": "Used for PM-2026-1224; period ended"
+    },
+    {
+      "fundingRef": "FC-2026-041",
+      "supplierCode": "S-GLW-114",
+      "supplierName": "Glow Beauty Laboratories (HK) Ltd",
+      "itemCodes": [
+        "GLW-SRM-30ML"
+      ],
+      "fundingType": "SCAN_BACK",
+      "ratePerUnit": 12.0,
+      "fundedCap": 2000,
+      "periodFrom": "2026-10-01",
+      "periodTo": "2026-11-30",
+      "channels": [
+        "STORE"
+      ],
+      "status": "AGREED_PENDING_EVIDENCE",
+      "evidenceRef": null,
+      "authorisedContact": "Cheryl Kwan",
+      "conditions": {
+        "minSellingPrice": 129.0,
+        "excludesClearance": true
+      },
+      "notes": "Agreed by email 17 Sep 2026; letter awaited"
+    },
+    {
+      "fundingRef": "FC-2026-047",
+      "supplierCode": "S-PNN-330",
+      "supplierName": "PureNest Nutrition (Asia) Ltd",
+      "itemCodes": [
+        "PURE-GUM-S3-900"
+      ],
+      "fundingType": "SCAN_BACK",
+      "ratePerUnit": 15.0,
+      "fundedCap": 5000,
+      "periodFrom": "2026-10-01",
+      "periodTo": "2026-12-31",
+      "channels": [
+        "STORE",
+        "ESHOP",
+        "APP"
+      ],
+      "status": "CONFIRMED",
+      "evidenceRef": "EV-2026-0468",
+      "authorisedContact": "Ada Wong"
+    },
+    {
+      "fundingRef": "FC-2026-049",
+      "supplierCode": "S-FRM-402",
+      "supplierName": "FreshMint Oral Care Ltd",
+      "itemCodes": [
+        "FRSH-TP-2X150"
+      ],
+      "fundingType": "OFF_INVOICE",
+      "amountPerUnit": 4.0,
+      "fundedCap": null,
+      "periodFrom": "2026-10-01",
+      "periodTo": "2026-10-31",
+      "channels": null,
+      "status": "CONFIRMED",
+      "evidenceRef": "EV-2026-0475",
+      "authorisedContact": "Ray Cheng"
+    },
+    {
+      "fundingRef": "FC-2026-052",
+      "supplierCode": "S-OCP-127",
+      "supplierName": "OceanPure Nutraceuticals Ltd",
+      "itemCodes": [
+        "OMG-FO-1000-100"
+      ],
+      "fundingType": "SCAN_BACK",
+      "ratePerUnit": 25.0,
+      "fundedCap": 6000,
+      "periodFrom": "2026-11-01",
+      "periodTo": "2026-11-30",
+      "channels": [
+        "STORE",
+        "ESHOP",
+        "APP"
+      ],
+      "status": "CONFIRMED",
+      "evidenceRef": "EV-2026-0490",
+      "authorisedContact": "Helen Chow"
+    },
+    {
+      "fundingRef": "FC-2026-055",
+      "supplierCode": "S-LUM-119",
+      "supplierName": "Lumière Paris Asia Ltd",
+      "itemCodes": [
+        "LUMI-TNR-200"
+      ],
+      "fundingType": "COOP_MEDIA",
+      "amount": 20000.0,
+      "fundedCap": null,
+      "periodFrom": "2026-11-19",
+      "periodTo": "2026-12-02",
+      "channels": [
+        "STORE"
+      ],
+      "status": "CONFIRMED",
+      "evidenceRef": "EV-2026-0502",
+      "authorisedContact": "Pierre Lam",
+      "notes": "Leaflet co-op for C24; not recognised in promotion economics"
+    },
+    {
+      "fundingRef": "FC-2026-058",
+      "supplierCode": "S-AQD-233",
+      "supplierName": "AquaDew Korea Co. (HK agent)",
+      "itemCodes": [
+        "AQUA-MSK-5P"
+      ],
+      "fundingType": "FREE_GOODS",
+      "freeUnits": 500,
+      "fundedCap": null,
+      "periodFrom": "2026-10-01",
+      "periodTo": "2026-10-31",
+      "channels": null,
+      "status": "CONFIRMED",
+      "evidenceRef": "EV-2026-0510",
+      "authorisedContact": "Jin Park",
+      "notes": "Not recognised in promotion economics"
+    }
+  ],
+  "authorityDirectory": {
+    "people": [
+      {
+        "employeeId": "E10001",
+        "name": "Christopher Leung",
+        "title": "Managing Director",
+        "roles": [
+          "MANAGING_DIRECTOR"
+        ]
+      },
+      {
+        "employeeId": "E10007",
+        "name": "Andrew Kwok",
+        "title": "Commercial Director",
+        "roles": [
+          "COMMERCIAL_DIRECTOR"
+        ]
+      },
+      {
+        "employeeId": "E10021",
+        "name": "Rachel Tsang",
+        "title": "Head of Trading",
+        "roles": [
+          "HEAD_OF_TRADING"
+        ],
+        "unavailability": [
+          {
+            "from": "2026-10-12",
+            "to": "2026-10-16",
+            "reason": "Annual leave"
+          }
+        ]
+      },
+      {
+        "employeeId": "E10044",
+        "name": "Michelle Fung",
+        "title": "Deputy Head of Trading",
+        "roles": []
+      },
+      {
+        "employeeId": "E10105",
+        "name": "Mei Wong",
+        "title": "Head of Trade Marketing",
+        "roles": [
+          "PROCESS_OWNER"
+        ]
+      },
+      {
+        "employeeId": "E10234",
+        "name": "Vivian Chan",
+        "title": "Category Lead, Vitamins & Supplements",
+        "roles": [
+          "CATEGORY_LEAD_HEALTH"
+        ]
+      },
+      {
+        "employeeId": "E10301",
+        "name": "Tommy Chu",
+        "title": "Senior Category Manager, Health",
+        "roles": []
+      },
+      {
+        "employeeId": "E10388",
+        "name": "Samantha Yip",
+        "title": "Category Lead, Skincare",
+        "roles": [
+          "CATEGORY_LEAD_BEAUTY"
+        ]
+      },
+      {
+        "employeeId": "E10402",
+        "name": "Nicole Fong",
+        "title": "Senior Category Manager, Beauty",
+        "roles": []
+      },
+      {
+        "employeeId": "E10275",
+        "name": "Ivan Cheng",
+        "title": "Category Lead, Baby",
+        "roles": [
+          "CATEGORY_LEAD_BABY"
+        ]
+      },
+      {
+        "employeeId": "E10310",
+        "name": "Kitty Lau",
+        "title": "Senior Category Manager, Baby",
+        "roles": []
+      },
+      {
+        "employeeId": "E10290",
+        "name": "Winnie Tam",
+        "title": "Category Lead, Personal Care & Household",
+        "roles": [
+          "CATEGORY_LEAD_PERSONAL_CARE"
+        ]
+      },
+      {
+        "employeeId": "E10333",
+        "name": "Marcus Yeung",
+        "title": "Senior Category Manager, Personal Care",
+        "roles": []
+      },
+      {
+        "employeeId": "E10512",
+        "name": "Priscilla Lam",
+        "title": "Finance Controller, Commercial",
+        "roles": [
+          "FINANCE_CONTROLLER"
+        ]
+      },
+      {
+        "employeeId": "E10530",
+        "name": "Kenneth Poon",
+        "title": "Finance Manager, Commercial",
+        "roles": []
+      },
+      {
+        "employeeId": "E10450",
+        "name": "Daniel Ng",
+        "title": "Pricing & Promotion Operations Lead",
+        "roles": [
+          "PRICING_OPS_LEAD"
+        ]
+      },
+      {
+        "employeeId": "E10620",
+        "name": "Fiona Lau",
+        "title": "Compliance & Regulatory Manager",
+        "roles": [
+          "COMPLIANCE_MANAGER"
+        ]
+      },
+      {
+        "employeeId": "E10635",
+        "name": "Jonathan Lee",
+        "title": "Compliance Officer",
+        "roles": []
+      },
+      {
+        "employeeId": "E10710",
+        "name": "Kelvin Ho",
+        "title": "Supply Chain Planner, Health & Beauty",
+        "roles": [
+          "SUPPLY_PLANNER_HB"
+        ]
+      },
+      {
+        "employeeId": "E10722",
+        "name": "Sandy Mok",
+        "title": "Supply Chain Planner, Baby & Personal Care",
+        "roles": [
+          "SUPPLY_PLANNER_BPC"
+        ]
+      },
+      {
+        "employeeId": "E10801",
+        "name": "Jason Lo",
+        "title": "Trade Marketing Executive, Health",
+        "roles": [
+          "REQUESTER"
+        ]
+      },
+      {
+        "employeeId": "E10815",
+        "name": "Carmen Siu",
+        "title": "Trade Marketing Executive, Beauty",
+        "roles": [
+          "REQUESTER"
+        ]
+      },
+      {
+        "employeeId": "E10822",
+        "name": "Bonnie Lai",
+        "title": "Trade Marketing Executive, Baby & Personal Care",
+        "roles": [
+          "REQUESTER"
+        ]
+      },
+      {
+        "employeeId": "E10905",
+        "name": "Grace Ma",
+        "title": "DataLab Business Partner",
+        "roles": [
+          "DATALAB"
+        ]
+      }
+    ],
+    "delegations": [
+      {
+        "ref": "DLG-2026-011",
+        "role": "CATEGORY_LEAD_HEALTH",
+        "delegatorId": "E10234",
+        "delegateId": "E10301",
+        "bandScope": [
+          "A"
+        ],
+        "from": "2026-09-01",
+        "to": "2026-12-31",
+        "type": "STANDING",
+        "reason": "Standing delegate"
+      },
+      {
+        "ref": "DLG-2026-012",
+        "role": "CATEGORY_LEAD_BEAUTY",
+        "delegatorId": "E10388",
+        "delegateId": "E10402",
+        "bandScope": [
+          "A"
+        ],
+        "from": "2026-09-01",
+        "to": "2026-12-31",
+        "type": "STANDING",
+        "reason": "Standing delegate"
+      },
+      {
+        "ref": "DLG-2026-013",
+        "role": "CATEGORY_LEAD_BABY",
+        "delegatorId": "E10275",
+        "delegateId": "E10310",
+        "bandScope": [
+          "A"
+        ],
+        "from": "2026-09-01",
+        "to": "2026-12-31",
+        "type": "STANDING",
+        "reason": "Standing delegate"
+      },
+      {
+        "ref": "DLG-2026-014",
+        "role": "CATEGORY_LEAD_PERSONAL_CARE",
+        "delegatorId": "E10290",
+        "delegateId": "E10333",
+        "bandScope": [
+          "A"
+        ],
+        "from": "2026-09-01",
+        "to": "2026-12-31",
+        "type": "STANDING",
+        "reason": "Standing delegate"
+      },
+      {
+        "ref": "DLG-2026-015",
+        "role": "FINANCE_CONTROLLER",
+        "delegatorId": "E10512",
+        "delegateId": "E10530",
+        "bandScope": [
+          "B",
+          "C"
+        ],
+        "from": "2026-09-01",
+        "to": "2026-12-31",
+        "type": "STANDING",
+        "reason": "Standing delegate for review"
+      },
+      {
+        "ref": "DLG-2026-018",
+        "role": "HEAD_OF_TRADING",
+        "delegatorId": "E10021",
+        "delegateId": "E10044",
+        "bandScope": [
+          "B"
+        ],
+        "from": "2026-10-12",
+        "to": "2026-10-16",
+        "type": "ABSENCE",
+        "reason": "Annual leave — Trading meeting 8 Sep item 7"
+      },
+      {
+        "ref": "DLG-2026-019",
+        "role": "COMPLIANCE_MANAGER",
+        "delegatorId": "E10620",
+        "delegateId": "E10635",
+        "bandScope": [],
+        "from": "2026-10-01",
+        "to": "2026-10-31",
+        "type": "ABSENCE",
+        "reason": "October reviews — Trading meeting 8 Sep item 5"
+      }
+    ],
+    "roleBands": {
+      "CATEGORY_LEAD": "A",
+      "FINANCE_CONTROLLER": "review B/C/D",
+      "HEAD_OF_TRADING": "B",
+      "COMMERCIAL_DIRECTOR": "C",
+      "MANAGING_DIRECTOR": "D"
+    }
+  },
+  "complianceRestrictions": [
+    {
+      "regulatoryClass": "NONE",
+      "screen": "PROCEED",
+      "complianceReview": "NONE",
+      "comparativeClaims": "SUBJECT_TO_REFERENCE_PRICE_RULE",
+      "flashAllowed": true,
+      "leafletAllowed": true,
+      "guidelineRef": "WTCHK-LEG-GDL-004 §9"
+    },
+    {
+      "regulatoryClass": "HEALTH_SUPPLEMENT",
+      "screen": "PROCEED",
+      "complianceReview": "IF_CLAIMS",
+      "comparativeClaims": "SUBJECT_TO_REFERENCE_PRICE_RULE",
+      "flashAllowed": true,
+      "leafletAllowed": true,
+      "guidelineRef": "§4"
+    },
+    {
+      "regulatoryClass": "COSMETIC_ACTIVE",
+      "screen": "PROCEED",
+      "complianceReview": "IF_CLAIMS",
+      "comparativeClaims": "SUBJECT_TO_REFERENCE_PRICE_RULE",
+      "flashAllowed": true,
+      "leafletAllowed": true,
+      "guidelineRef": "§4"
+    },
+    {
+      "regulatoryClass": "OTC_GENERAL_SALE",
+      "screen": "PROCEED",
+      "complianceReview": "IF_CLAIMS",
+      "comparativeClaims": "SUBJECT_TO_REFERENCE_PRICE_RULE",
+      "flashAllowed": false,
+      "leafletAllowed": true,
+      "guidelineRef": "§4; Margin Policy §3"
+    },
+    {
+      "regulatoryClass": "MEDICAL_DEVICE",
+      "screen": "PROCEED",
+      "complianceReview": "MANDATORY_COPY",
+      "comparativeClaims": "SUBJECT_TO_REFERENCE_PRICE_RULE",
+      "flashAllowed": true,
+      "leafletAllowed": true,
+      "guidelineRef": "§4"
+    },
+    {
+      "regulatoryClass": "FORMULA_S3",
+      "screen": "PROCEED",
+      "complianceReview": "MANDATORY",
+      "comparativeClaims": "SUBJECT_TO_REFERENCE_PRICE_RULE",
+      "flashAllowed": false,
+      "leafletAllowed": true,
+      "leafletConditions": "Not adjacent to Stage 1/2 products; no nutrition or health claims",
+      "guidelineRef": "§4"
+    },
+    {
+      "regulatoryClass": "ALCOHOL",
+      "screen": "PROCEED",
+      "complianceReview": "MANDATORY_MECHANIC",
+      "comparativeClaims": "SUBJECT_TO_REFERENCE_PRICE_RULE",
+      "flashAllowed": true,
+      "leafletAllowed": true,
+      "guidelineRef": "§4"
+    },
+    {
+      "regulatoryClass": "INFANT_FORMULA_S1",
+      "screen": "BLOCKED",
+      "complianceReview": null,
+      "guidelineRef": "§3"
+    },
+    {
+      "regulatoryClass": "INFANT_FORMULA_S2",
+      "screen": "BLOCKED",
+      "complianceReview": null,
+      "guidelineRef": "§3"
+    },
+    {
+      "regulatoryClass": "PHARMACY_ONLY_P1",
+      "screen": "BLOCKED",
+      "complianceReview": null,
+      "guidelineRef": "§3"
+    },
+    {
+      "regulatoryClass": "PRESCRIPTION",
+      "screen": "BLOCKED",
+      "complianceReview": null,
+      "guidelineRef": "§3"
+    },
+    {
+      "regulatoryClass": "TOBACCO",
+      "screen": "BLOCKED",
+      "complianceReview": null,
+      "guidelineRef": "§3"
+    }
+  ],
+  "supplierAuthorisedContacts": [
+    {
+      "supplierCode": "S-GLW-114",
+      "contacts": [
+        "Cheryl Kwan"
+      ]
+    },
+    {
+      "supplierCode": "S-SUN-208",
+      "contacts": [
+        "Marco Tse"
+      ]
+    },
+    {
+      "supplierCode": "S-PNN-330",
+      "contacts": [
+        "Ada Wong"
+      ]
+    },
+    {
+      "supplierCode": "S-FRM-402",
+      "contacts": [
+        "Ray Cheng"
+      ]
+    },
+    {
+      "supplierCode": "S-OCP-127",
+      "contacts": [
+        "Helen Chow"
+      ]
+    },
+    {
+      "supplierCode": "S-LUM-119",
+      "contacts": [
+        "Pierre Lam"
+      ]
+    },
+    {
+      "supplierCode": "S-AQD-233",
+      "contacts": [
+        "Jin Park"
+      ]
+    }
+  ],
+  "evidenceVerificationOutcomes": [
+    {
+      "fundingRef": "FC-2026-041",
+      "documentFingerprint": "GBL/TF/2026/0917",
+      "outcome": "VERIFIED",
+      "coverage": {
+        "period": "FULL",
+        "channels_STORE": "FULL",
+        "channels_ESHOP": "PARTIAL_CHANNEL"
+      },
+      "newStatus": "CONFIRMED"
+    }
+  ],
+  "demoFaults": [
+    {
+      "header": "X-Demo-Fault",
+      "value": "erp-cost-timeout",
+      "effect": "GET /erp/costs returns 504 after 8s"
+    },
+    {
+      "header": "X-Demo-Fault",
+      "value": "promohub-validation-warning",
+      "effect": "Draft validation returns WARNING: price zone missing"
+    },
+    {
+      "header": "X-Demo-Clock",
+      "value": "YYYY-MM-DD",
+      "effect": "Overrides the demo date for availability, cut-off and SLA calculations"
+    }
+  ]
+}

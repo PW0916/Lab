@@ -1,0 +1,155 @@
+# Agents and skills the platform generated for the Promotion Request and Approval workflow.
+# Two agent families:
+#   studio  — build-time agents that read documents, extract knowledge, propose the blueprint and process feedback
+#   runtime — agents that run a case for a Promotion Owner in the Workflow Assistant
+# A skill is a reusable, testable capability with declared inputs, outputs, rules and systems.
+# Rule IDs refer to knowledge-model.yaml; stage IDs to workflow-blueprint.yaml v1.0.
+
+orchestration:
+  pattern: "Supervisor (Case Orchestrator) delegates to specialist agents per stage; each agent returns a structured result with sources; the orchestrator maintains case state and the decision pack."
+  humanInTheLoop: [S01, S04, S05 (evidence), S08 (J-05 confirmation), S12 (decisions and gates)]
+  guardrails:
+    - "No agent may set a decision field; only /approvals/tasks/{id}/decision by a human sets it (H-29)."
+    - "Any numeric result must carry inputs, formula and policy version (MP §12)."
+    - "Missing data → NOT COMPUTABLE + pause (H-28); no defaults, no estimates."
+    - "Every UI card showing simulated data carries a SIMULATED badge (INTAKE §4)."
+
+studioAgents:
+  - id: ST-01
+    name: Document Analyst
+    purpose: "Parse uploaded documents of any format (Markdown, Word, PDF, Excel, email, minutes); build a section map with IDs, versions, dates and hierarchy level."
+    skills: [SK-S01, SK-S02]
+  - id: ST-02
+    name: Process Mapper
+    purpose: "Derive process steps, roles, hand-offs and SLAs from SOP and procedure text."
+    skills: [SK-S03]
+  - id: ST-03
+    name: Rule Extractor
+    purpose: "Extract rules with type (HARD / JUDGEMENT / ADVISORY / DERIVED), formula, thresholds, inputs and citations; detect tacit rules in minutes."
+    skills: [SK-S04, SK-S05]
+  - id: ST-04
+    name: Data & System Mapper
+    purpose: "Map rule inputs to systems and fields from the intake; propose the API contract and fixtures; flag fields no system provides."
+    skills: [SK-S06]
+  - id: ST-05
+    name: Consistency Checker
+    purpose: "Find conflicts between documents, apply the document hierarchy, and raise findings; block feedback that contradicts a higher-level document."
+    skills: [SK-S07]
+  - id: ST-06
+    name: Blueprint Composer
+    purpose: "Compose stages, owners, systems, pauses and outputs into a workflow blueprint; generate the runtime agent and skill catalogue."
+    skills: [SK-S08]
+  - id: ST-07
+    name: Test Case Generator
+    purpose: "Generate golden scenarios from rules and fixtures so each rule is exercised at least once; produce expected values."
+    skills: [SK-S09]
+  - id: ST-08
+    name: Change Impact Analyst
+    purpose: "When a document is re-uploaded or feedback is given, show which rules, stages, skills and test cases change."
+    skills: [SK-S10]
+
+runtimeAgents:
+  - id: RT-00
+    name: Case Orchestrator
+    stages: [all]
+    purpose: "Own case state, sequence stages, aggregate results, maintain the decision pack, answer status questions."
+    skills: [SK-R01, SK-R21, SK-R22]
+  - id: RT-01
+    name: Intake Concierge
+    stages: [S01, S04]
+    purpose: "Conversational intake in the requester's language; progressive questions; confirm back; option framing when a cut-off cannot be met."
+    skills: [SK-R02, SK-R03, SK-R04]
+  - id: RT-02
+    name: Policy & Knowledge
+    stages: [any]
+    purpose: "Answer policy questions with citations; explain any check result in plain words; surface findings and their resolution status."
+    skills: [SK-R05]
+  - id: RT-03
+    name: Commercial Data
+    stages: [S02]
+    purpose: "Retrieve item, price, cost, baseline, stock and scope data; normalise into item facts with sources and timestamps."
+    skills: [SK-R06, SK-R07, SK-R08]
+  - id: RT-04
+    name: Compliance
+    stages: [S03, S07]
+    purpose: "Regulatory screen, reference price evaluation, Compliance review task creation."
+    skills: [SK-R09, SK-R10, SK-R11]
+  - id: RT-05
+    name: Funding
+    stages: [S05]
+    purpose: "Funding lookup, recognition, coverage, evidence extraction and verification hand-off."
+    skills: [SK-R12, SK-R13]
+  - id: RT-06
+    name: Calendar & Conflict
+    stages: [S06]
+    purpose: "Conflict search, frequency count, advisories tied to cycles."
+    skills: [SK-R14]
+  - id: RT-07
+    name: Promotion Economics
+    stages: [S08]
+    purpose: "Deterministic margin, depth, duration, investment, multi-buy allocation, plausibility; always shows inputs and formulas."
+    skills: [SK-R15, SK-R16, SK-R17]
+  - id: RT-08
+    name: Supply Readiness
+    stages: [S09]
+    purpose: "Stock cover and Supply Chain gate."
+    skills: [SK-R18]
+  - id: RT-09
+    name: Setup Readiness
+    stages: [S10, S13]
+    purpose: "Checklist §2 feasibility; after approval, simulated PromoHub draft, validation and handover note."
+    skills: [SK-R19, SK-R23]
+  - id: RT-10
+    name: Approval Routing
+    stages: [S11]
+    purpose: "Band and escalations; resolve named people with delegation and availability; segregation of duties."
+    skills: [SK-R20]
+  - id: RT-11
+    name: Decision Pack & Reporter
+    stages: [S12, S14]
+    purpose: "Assemble the decision pack; create tasks; record decisions; reminders and escalations; notifications and handover."
+    skills: [SK-R21, SK-R22, SK-R24]
+
+skills:
+  # ---------------- studio skills ----------------
+  - { id: SK-S01, name: parse-document,             agent: ST-01, inputs: [file], outputs: [section map, metadata], notes: "Any format; preserves section numbers for citations" }
+  - { id: SK-S02, name: classify-document-level,    agent: ST-01, inputs: [metadata, SOP §1.3 hierarchy], outputs: [level 1–4] }
+  - { id: SK-S03, name: map-process-steps,          agent: ST-02, inputs: [SOP sections], outputs: [steps, roles, SLAs] }
+  - { id: SK-S04, name: extract-rules,              agent: ST-03, inputs: [sections], outputs: [rules with type, formula, thresholds, citations] }
+  - { id: SK-S05, name: detect-tacit-rules,         agent: ST-03, inputs: [minutes, emails], outputs: [ADVISORY candidates with owner to confirm] }
+  - { id: SK-S06, name: map-rule-inputs-to-systems, agent: ST-04, inputs: [rules, intake], outputs: [system/field map, API contract proposal, gaps] }
+  - { id: SK-S07, name: check-consistency,          agent: ST-05, inputs: [rules, hierarchy], outputs: [findings F-xx, proposed resolution, blocked feedback] }
+  - { id: SK-S08, name: compose-blueprint,          agent: ST-06, inputs: [steps, rules, systems], outputs: [blueprint, agents, skills] }
+  - { id: SK-S09, name: generate-golden-scenarios,  agent: ST-07, inputs: [rules, fixtures], outputs: [scenarios with expected values] }
+  - { id: SK-S10, name: analyse-change-impact,      agent: ST-08, inputs: [diff of documents or feedback], outputs: [affected rules, stages, skills, tests] }
+
+  # ---------------- runtime skills ----------------
+  - { id: SK-R01, name: manage-case-state,          agent: RT-00, rules: [H-32], outputs: [case status, timeline] }
+  - { id: SK-R02, name: conversational-intake,      agent: RT-01, rules: [H-04], inputs: [free text, uploads], outputs: [structured request], notes: "Bilingual EN/ZH; confirms each captured field" }
+  - { id: SK-R03, name: validate-scope-and-dates,   agent: RT-01, rules: [H-05, H-06, H-07], systems: [Store Network, PromoHub], outputs: [validated scope, cycle, cut-off table] }
+  - { id: SK-R04, name: frame-options,              agent: RT-01, rules: [J-02], outputs: ["2–4 concrete options with consequences (e.g. move cycle / drop leaflet / request exception)"] }
+  - { id: SK-R05, name: answer-policy-question,     agent: RT-02, inputs: [question], outputs: [answer with section citations and finding status] }
+  - { id: SK-R06, name: get-item-facts,             agent: RT-03, rules: [H-01, D-01], systems: [Product Master], outputs: [item facts] }
+  - { id: SK-R07, name: get-price-and-cost,         agent: RT-03, rules: [H-12, H-28, D-03], systems: [ERP Pricing & Cost], outputs: [regular price + history, effective unit cost], notes: "On 504: NOT COMPUTABLE, pause" }
+  - { id: SK-R08, name: get-baseline-and-stock,     agent: RT-03, systems: [Sales & Stock Insights], outputs: [baseline by scope/channel, promo history, stock, inbound] }
+  - { id: SK-R09, name: regulatory-screen,          agent: RT-04, rules: [H-02, H-03, D-04, J-06], systems: [Compliance Register], outputs: [PROCEED / BLOCKED, gate required, alternatives] }
+  - { id: SK-R10, name: evaluate-reference-price,   agent: RT-04, rules: [H-26, D-05], outputs: [claim permitted yes/no, days at price, last change, fallback wording] }
+  - { id: SK-R11, name: open-compliance-review,     agent: RT-04, rules: [H-03, J-03], systems: [Compliance Register, Authority Directory], outputs: [CR task with owner/delegate and due date] }
+  - { id: SK-R12, name: recognise-funding,          agent: RT-05, rules: [H-08, H-09, H-10, H-11, H-13], systems: [Trade Funding Register], outputs: [recognised per unit, coverage, reason] }
+  - { id: SK-R13, name: extract-and-verify-evidence, agent: RT-05, rules: [H-08], systems: [Trade Funding Register], inputs: [uploaded letter], outputs: [extracted fields, verification result, new status], notes: "Verification labelled as simulated Finance action" }
+  - { id: SK-R14, name: check-conflicts-and-frequency, agent: RT-06, rules: [H-14, H-15, A-02], systems: [PromoHub, Sales & Stock Insights], outputs: [conflicts, weeks per channel, advisories] }
+  - { id: SK-R15, name: compute-promotion-economics, agent: RT-07, rules: [H-16, H-17, H-18, H-19, H-21, H-28, A-01], outputs: [margin, floor test, depth, duration, investment, floor price / min funding] }
+  - { id: SK-R16, name: allocate-multi-buy,         agent: RT-07, rules: [H-20, H-21], outputs: [per-item allocation, worst-case table, failing items] }
+  - { id: SK-R17, name: check-forecast-plausibility, agent: RT-07, rules: [J-05, A-03], systems: [Sales & Stock Insights (benchmarks)], outputs: [benchmark, range, flag, event-modifier suggestion] }
+  - { id: SK-R18, name: check-stock-cover,          agent: RT-08, rules: [H-27, J-04], outputs: [cover, shortfall, expedite option, gate task] }
+  - { id: SK-R19, name: setup-feasibility-check,    agent: RT-09, rules: [H-30], systems: [PromoHub, Store Network, Product Master], outputs: [Checklist §2 results] }
+  - { id: SK-R20, name: resolve-approvers,          agent: RT-10, rules: [H-22, H-23, H-24, H-25, H-33], systems: [Authority Directory], outputs: [band, escalations, named routing with delegation refs] }
+  - { id: SK-R21, name: assemble-decision-pack,     agent: RT-11, rules: [H-29], outputs: [DP document per template] }
+  - { id: SK-R22, name: run-approval-tasks,         agent: RT-11, rules: [H-29, H-32, J-01, J-02, J-03, J-04], systems: [Approval & Notification Hub], outputs: [tasks, decisions, reminders, escalations] }
+  - { id: SK-R23, name: simulate-promohub-draft,    agent: RT-09, rules: [H-30, H-31], systems: [PromoHub], outputs: [draft PD-…, validation, handover note] }
+  - { id: SK-R24, name: notify-and-handover,        agent: RT-11, systems: [Approval & Notification Hub], outputs: [FYI / status / handover notifications] }
+
+reuseAcrossWorkflows:
+  note: "Skills marked below are workflow-agnostic and become the seed of the BU skill library once a second workflow (e.g. new item listing, markdown approval, supplier funding claim) is onboarded."
+  reusable: [SK-S01, SK-S02, SK-S03, SK-S04, SK-S05, SK-S06, SK-S07, SK-S08, SK-S09, SK-S10, SK-R01, SK-R02, SK-R04, SK-R05, SK-R06, SK-R07, SK-R08, SK-R20, SK-R21, SK-R22, SK-R24]
+  workflowSpecific: [SK-R03, SK-R09, SK-R10, SK-R11, SK-R12, SK-R13, SK-R14, SK-R15, SK-R16, SK-R17, SK-R18, SK-R19, SK-R23]

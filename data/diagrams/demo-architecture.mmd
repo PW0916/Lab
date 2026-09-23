@@ -1,0 +1,38 @@
+flowchart LR
+    subgraph SP[SharePoint - documents as-is]
+        D[12 documents + 1 intake]
+    end
+    subgraph ST[Workflow Studio]
+        A1[Document Analyst] --> A3[Rule Extractor]
+        A3 --> A5[Consistency Checker]
+        A5 --> A6[Blueprint Composer]
+        A4[Data and System Mapper] --> A6
+        A6 --> A7[Test Case Generator]
+        A8[Change Impact Analyst]
+    end
+    subgraph WA[Workflow Assistant]
+        O[Case Orchestrator]
+        R[11 specialist agents / 24 skills]
+        H[Approver inbox, gates, exceptions]
+        C[Demo controls: identity, clock, faults]
+    end
+    subgraph MS[Mock system layer - OpenAPI + fixtures]
+        M1[Product Master] 
+        M2[ERP Pricing and Cost]
+        M3[Sales and Stock Insights]
+        M4[PromoHub]
+        M5[Trade Funding Register]
+        M6[Authority Directory]
+        M7[Compliance Register]
+        M8[Store Network]
+        M9[Approval and Notification Hub]
+    end
+    D --> A1
+    D --> A4
+    A6 -- approved blueprint 1.0 --> O
+    PO((Process owner)) -- feedback --> A8 --> A6
+    CU((Citizen user)) -- chat EN/ZH --> O
+    O --> R
+    R --> MS
+    O --> H
+    AP((Approvers)) --> H

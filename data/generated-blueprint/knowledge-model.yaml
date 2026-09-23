@@ -1,0 +1,402 @@
+# Knowledge model extracted by Workflow Studio from the 12 uploaded documents.
+# This is what the platform "learned"; it is shown to the process owner (Mei Wong) for review
+# before any workflow, agent or skill is generated. Every rule cites its source.
+# Rule types:
+#   HARD      — deterministic; the platform applies it and shows the calculation
+#   JUDGEMENT — a named human decides; the platform prepares the facts
+#   ADVISORY  — tacit or planning guidance; surfaced, never blocking, until the owner promotes it
+#   DERIVED   — an interpretation the Studio made to reconcile documents; must be confirmed
+
+knowledgeModel:
+  workflow: Promotion Request and Approval
+  businessUnit: WTCHK
+  extractedOn: 2026-09-25
+  fixtureVersion: "2.0"
+  sources:
+    - { id: SOP,    doc: "WTCHK-COM-SOP-014 v1.4",        level: 2,   file: 01-Promotion-Request-and-Approval-SOP-v1.4.md }
+    - { id: DOA,    doc: "WTCHK-COM-POL-032 v3.2",        level: 1,   file: 02-Delegation-of-Authority-Promotions-and-Pricing-v3.2.md }
+    - { id: MP,     doc: "WTCHK-FIN-POL-021 v2.1",        level: 1,   file: 03-Promotional-Pricing-Margin-and-Funding-Policy-v2.1.md }
+    - { id: GDL,    doc: "WTCHK-LEG-GDL-004 v1.2",        level: 1,   file: 04-Regulatory-and-Restricted-Category-Guidelines-v1.2.md }
+    - { id: CHK,    doc: "WTCHK-OPS-CHK-010 v1.0",        level: 3,   file: 05-Promotion-Setup-and-Go-Live-Checklist-v1.0.md }
+    - { id: FP,     doc: "WTCHK-FIN-PRC-006 v1.3",        level: 2,   file: 06-Supplier-Trade-Funding-Procedure-v1.3.md }
+    - { id: CAL,    doc: "WTCHK-TM-CAL-2026H2 v2.0",      level: 3,   file: 07-Promotion-Cycle-Calendar-FY26-H2.md }
+    - { id: FORM,   doc: "WTCHK-TM-FORM-PR-2026 v2026.2", level: 3,   file: 08-Promotion-Request-Form-Template-and-Guidance.md }
+    - { id: MIN,    doc: "Trading Meeting Minutes 8 Sep 2026", level: 4, file: 09-Trading-Meeting-Minutes-2026-09-08.md }
+    - { id: INTAKE, doc: "Workflow System Context Intake", level: n/a, file: 10-Workflow-System-Context-Intake.md }
+    - { id: LETTER, doc: "Funding confirmation FC-2026-041", level: n/a, file: 11-Funding-Confirmation-Letter-FC-2026-041.md }
+    - { id: PPE,    doc: "WTCHK-TM-PPE-2026-C19",         level: 4,   file: 12-Post-Promotion-Evaluation-C19-Health-Week.md }
+  documentHierarchy: "Level 1 policies > Level 2 SOP/procedures > Level 3 checklists/calendars/forms > Level 4 minutes/notes (informative). Source: SOP §1.3"
+
+roles:
+  - { role: REQUESTER, label: "Promotion Owner (renamed from Requester in v1.0)", source: "SOP §3; FORM §A" }
+  - { role: CATEGORY_LEAD, label: "Category Lead, approves Band A", source: "DOA §4" }
+  - { role: FINANCE_CONTROLLER, label: "Finance Controller Commercial, reviews Band B+", source: "DOA §4" }
+  - { role: HEAD_OF_TRADING, label: "Head of Trading, approves Band B and cut-off exceptions", source: "DOA §4, §5.8" }
+  - { role: COMMERCIAL_DIRECTOR, label: "Commercial Director, approves Band C and exceptions", source: "DOA §4, §5" }
+  - { role: MANAGING_DIRECTOR, label: "Managing Director, approves Band D", source: "DOA §4" }
+  - { role: PRICING_OPS_LEAD, label: "Pricing & Promotion Ops, feasibility and setup", source: "SOP §3; CHK §2–3" }
+  - { role: SUPPLY_PLANNER, label: "Supply Chain Planner, stock gate", source: "SOP §6.6; DOA §5.10" }
+  - { role: COMPLIANCE_MANAGER, label: "Compliance & Regulatory Manager, compliance gate", source: "GDL §8; DOA §5.9" }
+  - { role: PROCESS_OWNER, label: "Head of Trade Marketing, owns SOP and Studio review", source: "SOP §3" }
+
+rules:
+  # ---------------- HARD ----------------
+  - id: H-01
+    type: HARD
+    title: "Item lifecycle eligibility"
+    statement: "Item must be ACTIVE or NEW; PHASE_OUT only if promotion ends on/before delistDate or as Clearance; DELISTED only as Clearance; barcode must be ACTIVE."
+    source: "SOP §4.3; CHK §2.1–2.2"
+    inputs: [Product Master.lifecycleStatus, Product Master.delistDate, Product Master.barcodeStatus, request.endDate]
+  - id: H-02
+    type: HARD
+    title: "Prohibited regulatory classes"
+    statement: "Items in INFANT_FORMULA_S1, INFANT_FORMULA_S2, PHARMACY_ONLY_P1, PRESCRIPTION, TOBACCO cannot be promoted in any mechanic; case outcome BLOCKED_REGULATORY with citation."
+    source: "GDL §3; SOP §6.2"
+  - id: H-03
+    type: HARD
+    title: "Restricted regulatory classes require a Compliance gate"
+    statement: "FORMULA_S3 (mandatory), MEDICAL_DEVICE (copy), ALCOHOL (mechanic), and HEALTH_SUPPLEMENT / OTC_GENERAL_SALE / COSMETIC_ACTIVE when copy contains claims → open Compliance review in parallel; release blocked until closed; SLA 3 working days."
+    source: "GDL §4, §8, §9; DOA §5.9; SOP §7.3"
+  - id: H-04
+    type: HARD
+    title: "Required inputs by mechanic"
+    statement: "Collect the SOP §4.1 inputs for all mechanics plus §4.2 inputs by mechanic; plus price zone and event code (see F-03)."
+    source: "SOP §4.1–4.2; CHK §2.4, §2.6; MIN item 4"
+  - id: H-05
+    type: HARD
+    title: "Cycle alignment"
+    statement: "Standard/Local promotions start on a cycle start (Thu) and end on a cycle end (Wed); Flash any day ≤72h; Event follows the event window; Clearance reviewed per cycle."
+    source: "SOP §2.2, §5.1; CAL §1"
+  - id: H-06
+    type: HARD
+    title: "Cut-offs by execution route"
+    statement: "Approval (not submission) must precede the cut-off — leaflet 21 calendar days, digital 10, in-store 7 before cycle start; member mechanics digital + 10 days loyalty lead time. Report days remaining against the expected decision date."
+    source: "CAL §2–3; SOP §5.2"
+  - id: H-07
+    type: HARD
+    title: "Flash cut-off"
+    statement: "3 working days before Flash start (Calendar v2.0), superseding the SOP's 5 working days — see F-02; resolved by the process owner in Studio."
+    source: "CAL §2 change note; SOP §5.2; MIN item 4"
+  - id: H-08
+    type: HARD
+    title: "Funding recognised only when CONFIRMED"
+    statement: "Only Trade Funding Register commitments with status CONFIRMED and verified evidence are recognised; DRAFT, AGREED_PENDING_EVIDENCE, EXPIRED, CANCELLED and email-only agreements count as zero. Offer the requester: file evidence now, or proceed with zero."
+    source: "MP §5.1; FP §4–5; SOP §4.5, §6.4"
+  - id: H-09
+    type: HARD
+    title: "Funding coverage"
+    statement: "Recognise only if the commitment covers the item, the full promotion period and all requested channels; report PARTIAL_PERIOD / PARTIAL_CHANNEL / NOT_COVERED with the specific gap."
+    source: "MP §5.2; FP §4.3"
+  - id: H-10
+    type: HARD
+    title: "Cap proration"
+    statement: "recognisedPerUnit = rate × min(forecast, cap) ÷ forecast."
+    source: "MP §5.3"
+  - id: H-11
+    type: HARD
+    title: "Lump-sum conversion"
+    statement: "Lump sum ÷ forecast units; only the share allocated to this item and period."
+    source: "MP §5.4"
+  - id: H-12
+    type: HARD
+    title: "Off-invoice reduces effective unit cost"
+    statement: "effectiveUnitCost = landedCost − confirmed off-invoice covering the full period; off-invoice is not part of recognised funding or investment."
+    source: "MP §2, §4, §5.5"
+  - id: H-13
+    type: HARD
+    title: "Free goods and co-op media not recognised"
+    statement: "FREE_GOODS and COOP_MEDIA are reported but excluded from margin and investment."
+    source: "MP §5.6; FP §2"
+  - id: H-14
+    type: HARD
+    title: "Stacking conflict"
+    statement: "One price/value mechanic per item per channel per day; overlap with PLANNED/APPROVED/RELEASED/ACTIVE promotions blocks unless re-scoped or the other promotion is withdrawn; unresolved → Band C."
+    source: "MP §8.1; SOP §6.5; DOA §5.3"
+  - id: H-15
+    type: HARD
+    title: "Promotion frequency"
+    statement: "≤6 promotion weeks per channel in the rolling 12 weeks before start (Flash counts 1); exceeding → minimum Band B and requester must justify not pricing permanently lower."
+    source: "MP §7; DOA §5.5"
+  - id: H-16
+    type: HARD
+    title: "Margin floor"
+    statement: "promoMargin = (promoPrice − effectiveUnitCost + recognisedFundingPerUnit) ÷ promoPrice ≥ floor[categoryGroup][promotionType]; own brand uses the own-brand row; OTC/Medical Devices/Baby Nutrition Flash not permitted."
+    source: "MP §3–4"
+  - id: H-17
+    type: HARD
+    title: "Below-floor reporting"
+    statement: "When below floor also report floorPrice = effectiveUnitCost ÷ (1 − floor) − funding, minFundingPerUnit = floor × promoPrice − (promoPrice − effectiveUnitCost), and whether the regular margin is already below floor."
+    source: "MP §4"
+  - id: H-18
+    type: HARD
+    title: "Discount depth"
+    statement: "depth = (regular − promo) ÷ regular; >50% exception; >40% minimum Band B; BOGO = 50% over two units; 2nd-item-50% = 25% over two units; Clearance exempt."
+    source: "MP §6; DOA §5.4"
+  - id: H-19
+    type: HARD
+    title: "Duration"
+    statement: "Standard/Local ≤28 days; >28 → minimum Band B; >56 → Band C; Flash ≤72h."
+    source: "SOP §2.2; DOA §5.6"
+  - id: H-20
+    type: HARD
+    title: "Multi-buy allocation and worst-case test"
+    statement: "Allocate the saving pro rata to regular price within the qualifying set; for mix-and-match test each item against its floor in its worst-case pairing (lowest-priced eligible partner, including itself). Failing items are removed, funded or excepted."
+    source: "MP §8.2"
+  - id: H-21
+    type: HARD
+    title: "Net promotion investment and aggregation"
+    statement: "investment = max(0, regular − promo − recognisedFundingPerUnit) × forecast; mechanic-specific bases per DoA §3.2; aggregate across items/channels/mechanics under one campaign for banding; splitting to lower the band is a breach."
+    source: "DOA §3"
+  - id: H-22
+    type: HARD
+    title: "Approval bands"
+    statement: "A ≤50,000 Category Lead; B 50,001–200,000 Finance review + Head of Trading; C 200,001–1,000,000 Finance review + Commercial Director; D >1,000,000 or multi-BU + MD."
+    source: "DOA §4"
+  - id: H-23
+    type: HARD
+    title: "Escalation conditions"
+    statement: "Below floor → C; any exception → C; unresolved stacking → C; depth >40% → ≥B; frequency breach → ≥B; duration >28d → ≥B, >56d → C; hero SKU depth >35% → ≥B; cut-off exception → Head of Trading in addition; restricted class / non-permitted claim → Compliance gate; stock cover <110% → Supply gate. Highest band wins."
+    source: "DOA §5"
+  - id: H-24
+    type: HARD
+    title: "Segregation of duties"
+    statement: "Requester or preparer may not review or approve; if the role-holder is the requester route to the recorded standing delegate, else the next band; Band B+ reviewer ≠ approver."
+    source: "DOA §6.1"
+  - id: H-25
+    type: HARD
+    title: "Delegation and availability"
+    statement: "Resolve approvers as at the expected decision date; if unavailable for the SLA window use the recorded delegation (scope, dates); record the delegation reference; delegates cannot sub-delegate."
+    source: "DOA §6.2–6.3; SOP §7.3"
+  - id: H-26
+    type: HARD
+    title: "Reference price rule"
+    statement: "Comparative claims only if the regular price was charged ≥28 consecutive days within the prior 90 and not increased in the prior 14 days (both at promotion start); otherwise Special Price wording only + Compliance wording review."
+    source: "GDL §5; SOP §6.7"
+  - id: H-27
+    type: HARD
+    title: "Stock cover"
+    statement: "stockOnHand + confirmed inbound with ETA ≤ start − 3 days ≥ 110% × forecast; otherwise Supply Chain gate."
+    source: "SOP §6.6; DOA §5.10"
+  - id: H-28
+    type: HARD
+    title: "No estimation"
+    statement: "If regular price, cost, funding or forecast is unavailable, report NOT COMPUTABLE and pause; never substitute an estimate."
+    source: "MP §12; DOA §8"
+  - id: H-29
+    type: HARD
+    title: "Humans decide"
+    statement: "Only the named human role-holder (or recorded delegate) may approve, conditionally approve, return, reject or escalate; agents prepare, route and record; recommendations are labelled and cite rules and data."
+    source: "DOA §8; SOP §7.2"
+  - id: H-30
+    type: HARD
+    title: "Setup prerequisites"
+    statement: "Draft creation requires approved case reference, decision pack ID, price zone, event code (Event type), valid scope, supported mechanic per channel, no duplicate draft."
+    source: "CHK §2, §3; MIN item 4"
+  - id: H-31
+    type: HARD
+    title: "Release control"
+    statement: "No release with an open Compliance or Supply gate; any change to approved terms requires re-approval at the original band or higher."
+    source: "CHK §4"
+  - id: H-32
+    type: HARD
+    title: "Service levels and reminders"
+    statement: "Finance review 2 WD; approver 2 WD; Compliance 3 WD; Supply 1 WD; reminder after 1 WD; escalate to delegate after 3 WD or immediately if unavailable."
+    source: "SOP §7.3"
+  - id: H-33
+    type: HARD
+    title: "Flash approval shortcut"
+    statement: "Flash with investment ≤30,000 and no escalation → Category Lead approves, Head of Trading informed same day; otherwise standard bands."
+    source: "DOA §7"
+
+  # ---------------- JUDGEMENT ----------------
+  - id: J-01
+    type: JUDGEMENT
+    title: "Policy exception"
+    statement: "Below-floor, depth, frequency, duration or stacking breaches proceed only as an exception with stated rule, measured value, reason, benefit, mitigation; Finance review + Commercial Director decide."
+    source: "SOP §10; MP §11; DOA §5.1–5.3"
+  - id: J-02
+    type: JUDGEMENT
+    title: "Cut-off exception"
+    statement: "Head of Trading may approve a missed cut-off given the commercial reason and Pricing Ops' operational impact."
+    source: "SOP §5.2(c); DOA §5.8"
+  - id: J-03
+    type: JUDGEMENT
+    title: "Compliance review outcome"
+    statement: "APPROVED / APPROVED_WITH_WORDING_CHANGES / REJECTED by Compliance Manager or delegate."
+    source: "GDL §8"
+  - id: J-04
+    type: JUDGEMENT
+    title: "Supply Chain confirmation"
+    statement: "Planner confirms cover (e.g. expedite, allocation) or declines."
+    source: "SOP §6.6"
+  - id: J-05
+    type: JUDGEMENT
+    title: "Forecast plausibility confirmation"
+    statement: "Flag if forecast >130% of benchmark (baseline × weeks × uplift ± modifiers) or <80% of baseline period units; requester confirms or corrects; recorded."
+    source: "MP §10; PPE Part 2"
+  - id: J-06
+    type: JUDGEMENT
+    title: "Alternatives after a block"
+    statement: "When blocked, the platform may propose permitted alternatives (same brand/category, permitted class); the requester decides."
+    source: "GDL §3 (last paragraph)"
+
+  # ---------------- ADVISORY ----------------
+  - id: A-01
+    type: ADVISORY
+    title: "Own-brand margin below 40% — inform Head of Trading"
+    statement: "Own-brand promotions with promotional margin <40% are flagged FYI to the Head of Trading at approval time; not a band change."
+    source: "MIN item 1 (decision) — not yet in a controlled document"
+    status: PROMOTED_TO_INFORMED_ROUTING (Studio decision J-feedback 3, pending Rachel Tsang confirmation)
+  - id: A-02
+    type: ADVISORY
+    title: "Skincare hero SKUs — no price promotion in C23"
+    statement: "Hero skincare SKUs should not run price promotions in C23 (5–18 Nov) to protect Black Friday reference prices; requester prompted to confirm with the Skincare Category Lead."
+    source: "MIN item 2"
+  - id: A-03
+    type: ADVISORY
+    title: "PPE category cautions"
+    statement: "Surface PPE Part 3 notes (e.g. Omega-3 over-forecasting in 11.11 cycles; skincare hero post-promotion dips) when relevant to the item/cycle."
+    source: "PPE Part 3"
+  - id: A-04
+    type: ADVISORY
+    title: "BF26 depth guidance"
+    statement: "Calendar event rule says BF26 depth up to 40% by exception for non-hero items; treated as advisory until reflected in policy (see F-11)."
+    source: "CAL §5"
+
+  # ---------------- DERIVED ----------------
+  - id: D-01
+    type: DERIVED
+    title: "Hero SKU definition"
+    statement: "'Hero SKU' = Product Master strategicFlag = HERO (Trading maintains the flag; SharePoint list is a copy)."
+    source: "MIN item 2; SOP §2 (undefined)"
+  - id: D-02
+    type: DERIVED
+    title: "System aliases"
+    statement: "PromoHub = Promotion Management System; Item Master = Product Master; Register = Trade Funding Register."
+    source: "INTAKE §5; MIN item 4"
+  - id: D-03
+    type: DERIVED
+    title: "Effective unit cost"
+    statement: "'SOP §6.1 'landed cost and any confirmed off-invoice' is implemented as Margin Policy §2/§4 effective unit cost.'"
+    source: "SOP §6.1; MP §2, §4"
+  - id: D-04
+    type: DERIVED
+    title: "Regulatory class → rule mapping"
+    statement: "Implemented as the GDL §9 table; Compliance Register mirrors it."
+    source: "GDL §9; INTAKE §2.8"
+  - id: D-05
+    type: DERIVED
+    title: "Reference price evaluation basis"
+    statement: "'Evaluate GDL §5 using ERP regular price history (daysAtCurrentPrice, lastPriceChangeDate) at the promotion start date; promotional periods are not deducted from 'days at regular price' — interpretation flagged to Compliance (F-08).'"
+    source: "GDL §5; INTAKE §2.2"
+
+processSteps:   # as read from SOP §4–§9 before any Studio feedback
+  - { step: 1, name: Prepare request,        source: "SOP §4" }
+  - { step: 2, name: Item and commercial data, source: "SOP §6.1" }
+  - { step: 3, name: Regulatory screen,       source: "SOP §6.2" }
+  - { step: 4, name: Completeness,            source: "SOP §6.3; §5" }
+  - { step: 5, name: Funding recognition,     source: "SOP §6.4" }
+  - { step: 6, name: Conflicts and frequency, source: "SOP §6.5" }
+  - { step: 7, name: Economics and stock,     source: "SOP §6.6" }
+  - { step: 8, name: Reference price,         source: "SOP §6.7" }
+  - { step: 9, name: Approval routing,        source: "SOP §6.8" }
+  - { step: 10, name: Decision,               source: "SOP §7" }
+  - { step: 11, name: Handover and setup,     source: "SOP §8; CHK §3" }
+  - { step: 12, name: Post-promotion evaluation, source: "SOP §9" , inScopeForDemo: false }
+
+systems:   # from INTAKE §2, mapped to rules
+  - { system: Product Master,          rules: [H-01, H-02, H-03, D-01] }
+  - { system: ERP Pricing & Cost,      rules: [H-12, H-16, H-26, H-28] }
+  - { system: Sales & Stock Insights,  rules: [H-15, H-27, J-05] }
+  - { system: Store Network,           rules: [H-04, H-30] }
+  - { system: PromoHub,                rules: [H-05, H-06, H-07, H-14, H-15, H-30, H-31] }
+  - { system: Trade Funding Register,  rules: [H-08, H-09, H-10, H-11, H-12, H-13] }
+  - { system: Authority Directory,     rules: [H-22, H-23, H-24, H-25, H-29] }
+  - { system: Compliance Register,     rules: [H-02, H-03, H-26, J-03] }
+  - { system: Approval & Notification Hub, rules: [H-29, H-32, J-01, J-02, J-04] }
+
+findings:   # inconsistencies, gaps and ambiguities the Studio surfaced for the process owner
+  - id: F-01
+    severity: HIGH
+    title: "Band B upper limit differs"
+    detail: "SOP v1.4 retains a v1.3 implementation note stating Band B is HK$50,001–150,000; DoA v3.2 (15 Aug 2026) sets HK$200,000."
+    resolution: "Apply DoA v3.2 (Level 1 governs). Log SOP revision."
+    status: RESOLVED_BY_HIERARCHY
+  - id: F-02
+    severity: HIGH
+    title: "Flash cut-off differs"
+    detail: "SOP §5.2 says 5 working days; Calendar v2.0 §2 says 3 working days and notes the SOP is pending update; Minutes item 4 confirm 3."
+    resolution: "Hierarchy would favour the SOP; the process owner decided in Studio to apply 3 working days and log the SOP revision (feedback item 4)."
+    status: RESOLVED_BY_OWNER
+  - id: F-03
+    severity: MEDIUM
+    title: "Inputs missing from SOP"
+    detail: "Checklist §2.4/§2.6 and Minutes item 4 require price zone and event code; SOP §4 does not list them; requests were returned in C20 for this."
+    resolution: "Add both to intake (price zone derived from scope; event code asked for Event type or when the cycle carries an event)."
+    status: APPLIED
+  - id: F-04
+    severity: MEDIUM
+    title: "'Effective unit cost' terminology"
+    detail: "SOP §6.1 and Margin Policy use different phrasing for cost net of off-invoice."
+    resolution: "Use Margin Policy §2/§4 definition (D-03)."
+    status: APPLIED
+  - id: F-05
+    severity: MEDIUM
+    title: "Tacit rule — own-brand <40% visibility"
+    detail: "Minutes item 1 decision is not in any controlled document."
+    resolution: "'Encoded as advisory A-01 with 'informed' routing to Head of Trading; owner to confirm with Rachel Tsang and add to SOP.'"
+    status: PENDING_CONFIRMATION
+  - id: F-06
+    severity: LOW
+    title: "Tacit rule — skincare hero SKUs in C23"
+    detail: "Minutes item 2 planning guideline."
+    resolution: "Advisory A-02, prompt only."
+    status: APPLIED
+  - id: F-07
+    severity: MEDIUM
+    title: "'Hero SKU' undefined"
+    detail: "SOP §2 defers to a Trading list; DoA §5.7 depends on it."
+    resolution: "Product Master strategicFlag = HERO (D-01), per Minutes item 2."
+    status: APPLIED
+  - id: F-08
+    severity: MEDIUM
+    title: "Reference price basis"
+    detail: "'GDL §5 refers to the price 'actually charged'; ERP regular price history does not deduct promotional periods.'"
+    resolution: "Implement on ERP regular price history (D-05); ask Compliance whether promotional weeks should be excluded."
+    status: OPEN_QUESTION
+  - id: F-09
+    severity: LOW
+    title: "System alias"
+    detail: "'PromoHub' is a team nickname for the Promotion Management System."
+    resolution: "Glossary entry D-02."
+    status: APPLIED
+  - id: F-10
+    severity: LOW
+    title: "Plausibility check scope"
+    detail: "Margin Policy §10 excludes multi-buy, GWP, points and coupon mechanics from the forecast check."
+    resolution: "'Report 'not checked (policy scope)' for those mechanics rather than silently skipping.'"
+    status: APPLIED
+  - id: F-11
+    severity: LOW
+    title: "Overlapping depth rules for BF26"
+    detail: "DoA §5.7 (hero depth >35% → Band B) and Calendar §5 BF26 (depth up to 40% by exception for non-hero) overlap and use different thresholds."
+    resolution: "Apply DoA; treat Calendar event rule as advisory A-04; owner to align."
+    status: PENDING_CONFIRMATION
+  - id: F-12
+    severity: LOW
+    title: "Form validation gaps"
+    detail: "'Form §'Known limitations' lists free-text scope codes, no conflict check, no plausibility check, no status visibility.'"
+    resolution: "All four are covered by the generated workflow (Store Network validation, PromoHub conflict search, J-05, status queries)."
+    status: APPLIED
+
+glossary:
+  - { term: "Promotion cycle", definition: "Two-week trading period starting Thursday (C20–C28 in this calendar)", source: "SOP §2; CAL" }
+  - { term: "Cut-off", definition: "Date by which a request must be approved for an execution route", source: "SOP §5.2; CAL §2" }
+  - { term: "Net promotion investment", definition: "(regular − promo − recognised funding per unit) × forecast, floor 0, aggregated per campaign", source: "DOA §3" }
+  - { term: "Effective unit cost", definition: "Landed cost less confirmed off-invoice covering the period", source: "MP §2" }
+  - { term: "Recognised funding per unit", definition: "CONFIRMED scan-back or lump-sum funding covering item/period/channels, prorated to cap", source: "MP §5" }
+  - { term: "Band", definition: "Approval level A–D determined by investment and escalation conditions", source: "DOA §4–5" }
+  - { term: "Hero SKU", definition: "Product Master strategicFlag = HERO", source: "MIN item 2" }
+  - { term: "PromoHub", definition: "Promotion Management System", source: "INTAKE §5" }
+  - { term: "Special Price", definition: "Non-comparative price messaging used when the reference price rule is not met", source: "GDL §5.2" }
+  - { term: "Parallel gate", definition: "Compliance or Supply Chain confirmation that must close before release but does not change the approver", source: "DOA §5.9–5.10" }

@@ -1,0 +1,1100 @@
+openapi: 3.0.3
+info:
+  title: WTCHK Simulated Systems — Promotion Request and Approval Demo
+  version: 2.0.0
+  description: |
+    Contract for the nine simulated systems the agentic platform calls during the
+    Promotion Request and Approval demo for Watsons Hong Kong (fictional).
+
+    * Every response body carries `meta.simulated: true`, the simulated source system and the fixture version.
+    * Responses are deterministic for identical inputs and are served from `fixtures.json` (v2.0).
+    * `X-Demo-Clock` overrides the demo date (default 2026-09-28) for cut-off, availability and SLA calculations.
+    * `X-Demo-Fault` injects failures (see `mock-server-behaviour.md`).
+    * Nothing here writes to any live system. "Write" operations create labelled simulated records only.
+servers:
+  - url: https://demo-mocks.local/asw-wtchk
+    description: Local mock server (coding-agent generated)
+tags:
+  - name: Product Master
+  - name: ERP Pricing & Cost
+  - name: Sales & Stock Insights
+  - name: Store Network
+  - name: PromoHub
+  - name: Trade Funding Register
+  - name: Authority Directory
+  - name: Compliance Register
+  - name: Approval & Notification Hub
+
+paths:
+  # ------------------------------------------------------------ Product Master
+  /product-master/items/{itemCode}:
+    get:
+      tags: [Product Master]
+      summary: Get item by item code
+      operationId: getItem
+      parameters:
+        - $ref: '#/components/parameters/ItemCode'
+        - $ref: '#/components/parameters/DemoClock'
+        - $ref: '#/components/parameters/DemoFault'
+      responses:
+        '200':
+          description: Item found
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [meta, item]
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  item: { $ref: '#/components/schemas/Item' }
+              example:
+                meta: { simulated: true, source: Product Master, fixtureVersion: '2.0', asOf: '2026-09-28T09:00:00+08:00' }
+                item:
+                  itemCode: WTC-VITC-1000-20
+                  barcode: '4894532101234'
+                  descriptionEn: Watsons Vitamin C 1000mg Effervescent 20s
+                  brand: Watsons
+                  ownBrand: true
+                  supplierCode: S-WTC-001
+                  hierarchy: { division: Health, department: Vitamins & Supplements, class: Vitamin C, subclass: Effervescent }
+                  categoryGroup: OWN_BRAND
+                  benchmarkGroup: OWN_BRAND_VMS
+                  categoryLeadRole: CATEGORY_LEAD_HEALTH
+                  lifecycleStatus: ACTIVE
+                  regulatoryClass: HEALTH_SUPPLEMENT
+                  strategicFlag: HERO
+                  channelEligibility: [STORE, ESHOP, APP, MARKETPLACE]
+        '404': { $ref: '#/components/responses/NotFound' }
+  /product-master/items:
+    get:
+      tags: [Product Master]
+      summary: Search items by description or barcode
+      operationId: searchItems
+      parameters:
+        - in: query
+          name: query
+          schema: { type: string }
+          description: Free text matched against descriptionEn / descriptionZh / brand
+        - in: query
+          name: barcode
+          schema: { type: string }
+        - in: query
+          name: department
+          schema: { type: string }
+      responses:
+        '200':
+          description: Zero or more matches
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  items:
+                    type: array
+                    items: { $ref: '#/components/schemas/ItemSummary' }
+
+  # ------------------------------------------------------------ ERP
+  /erp/prices:
+    get:
+      tags: [ERP Pricing & Cost]
+      summary: Regular price with history for a price zone
+      operationId: getPrice
+      parameters:
+        - { in: query, name: itemCode, required: true, schema: { type: string } }
+        - { in: query, name: priceZone, required: true, schema: { type: string, enum: [HK-STD, HK-AIRPORT] } }
+        - { in: query, name: asOf, schema: { type: string, format: date }, description: Defaults to demo clock. Use the promotion start date to evaluate the reference price rule. }
+        - $ref: '#/components/parameters/DemoClock'
+        - $ref: '#/components/parameters/DemoFault'
+      responses:
+        '200':
+          description: Price record
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  price: { $ref: '#/components/schemas/PriceRecord' }
+              example:
+                meta: { simulated: true, source: ERP, fixtureVersion: '2.0', asOf: '2026-10-08' }
+                price:
+                  itemCode: FRSH-TP-2X150
+                  priceZone: HK-STD
+                  regularPrice: 59.9
+                  currency: HKD
+                  effectiveFrom: '2026-09-18'
+                  daysAtCurrentPrice: 20
+                  lastPriceChangeDate: '2026-09-18'
+                  lastChangeDirection: INCREASE
+                  history:
+                    - { price: 54.9, effectiveFrom: '2026-01-01', effectiveTo: '2026-09-17' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '504': { $ref: '#/components/responses/UpstreamTimeout' }
+  /erp/costs:
+    get:
+      tags: [ERP Pricing & Cost]
+      summary: Landed cost and confirmed off-invoice adjustments for a period
+      operationId: getCost
+      description: Commercially sensitive in production; fictional values in the demo. Fault `erp-cost-timeout` applies here.
+      parameters:
+        - { in: query, name: itemCode, required: true, schema: { type: string } }
+        - { in: query, name: periodFrom, required: true, schema: { type: string, format: date } }
+        - { in: query, name: periodTo, required: true, schema: { type: string, format: date } }
+        - $ref: '#/components/parameters/DemoClock'
+        - $ref: '#/components/parameters/DemoFault'
+      responses:
+        '200':
+          description: Cost record
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  cost: { $ref: '#/components/schemas/CostRecord' }
+              example:
+                meta: { simulated: true, source: ERP, fixtureVersion: '2.0', asOf: '2026-09-28' }
+                cost:
+                  itemCode: FRSH-TP-2X150
+                  landedCost: 30.0
+                  currency: HKD
+                  costEffectiveFrom: '2026-07-01'
+                  offInvoiceAdjustments:
+                    - { fundingRef: FC-2026-049, amountPerUnit: 4.0, periodFrom: '2026-10-01', periodTo: '2026-10-31', status: CONFIRMED, coverage: FULL }
+                  effectiveUnitCost: 26.0
+                  effectiveUnitCostBasis: landedCost − confirmed off-invoice covering the full requested period (Margin Policy §4)
+        '504': { $ref: '#/components/responses/UpstreamTimeout' }
+
+  # ------------------------------------------------------------ Insights
+  /insights/items/{itemCode}/performance:
+    get:
+      tags: [Sales & Stock Insights]
+      summary: Baseline, channel split and promotion history for a scope
+      operationId: getPerformance
+      parameters:
+        - $ref: '#/components/parameters/ItemCode'
+        - { in: query, name: scope, required: true, schema: { type: string }, description: Store scope code (e.g. HK-ALL, PILOT-20, HKI-KLNE) }
+        - { in: query, name: asOf, schema: { type: string, format: date }, description: Promotion start date; rolling 12-week promotion history is counted back from this date }
+        - $ref: '#/components/parameters/DemoClock'
+      responses:
+        '200':
+          description: Performance record
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  performance: { $ref: '#/components/schemas/PerformanceRecord' }
+              example:
+                meta: { simulated: true, source: Sales & Stock Insights, fixtureVersion: '2.0', asOf: '2026-10-08' }
+                performance:
+                  itemCode: WTC-VITC-1000-20
+                  scope: PILOT-20
+                  baselineWeeklyUnits: 160
+                  baselineBasis: median of last 8 non-promotional weeks
+                  channelSplit: { STORE: 160 }
+                  promoWeeksLast12ByChannel: { STORE: 2, ESHOP: 2, APP: 2 }
+                  promoHistory:
+                    - { promotionId: PM-2026-1193, from: '2026-08-27', to: '2026-09-09', weeks: 2, uplift: 2.9 }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /insights/items/{itemCode}/stock:
+    get:
+      tags: [Sales & Stock Insights]
+      summary: Stock on hand and confirmed inbound
+      operationId: getStock
+      parameters:
+        - $ref: '#/components/parameters/ItemCode'
+        - { in: query, name: asOf, schema: { type: string, format: date } }
+        - $ref: '#/components/parameters/DemoClock'
+      responses:
+        '200':
+          description: Stock position (network level)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  stock: { $ref: '#/components/schemas/StockRecord' }
+              example:
+                meta: { simulated: true, source: Sales & Stock Insights, fixtureVersion: '2.0', asOf: '2026-09-28' }
+                stock:
+                  itemCode: OMG-FO-1000-100
+                  stockOnHand: 2900
+                  inbound:
+                    - { qty: 2400, eta: '2026-11-10', status: CONFIRMED, expediteOption: { eta: '2026-11-01', costHkd: 3000, confirmBy: '2026-10-10' } }
+                  weeksOfCoverAtBaseline: 5.6
+  /insights/benchmarks:
+    get:
+      tags: [Sales & Stock Insights]
+      summary: Uplift benchmarks and modifiers (from the latest PPE)
+      operationId: getBenchmarks
+      parameters:
+        - { in: query, name: benchmarkGroup, schema: { type: string } }
+        - { in: query, name: mechanic, schema: { type: string } }
+      responses:
+        '200':
+          description: Benchmark table
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  source: { type: string, example: WTCHK-TM-PPE-2026-C19 Part 2 }
+                  uplift: { type: object, additionalProperties: { type: object, additionalProperties: { type: number } } }
+                  modifiers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code: { type: string }
+                        adjust: { type: number, description: Added to the multiple }
+                        multiply: { type: number, description: Multiplies the multiple }
+
+  # ------------------------------------------------------------ Store Network
+  /stores/scopes/{scopeCode}:
+    get:
+      tags: [Store Network]
+      summary: Validate a store scope code
+      operationId: getScope
+      parameters:
+        - { in: path, name: scopeCode, required: true, schema: { type: string } }
+        - { in: query, name: openOn, schema: { type: string, format: date } }
+      responses:
+        '200':
+          description: Scope
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  scope: { $ref: '#/components/schemas/StoreScope' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /stores/scopes:
+    get:
+      tags: [Store Network]
+      summary: List scope codes
+      operationId: listScopes
+      responses:
+        '200':
+          description: Scopes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  scopes: { type: array, items: { $ref: '#/components/schemas/StoreScope' } }
+
+  # ------------------------------------------------------------ PromoHub
+  /promohub/cycles:
+    get:
+      tags: [PromoHub]
+      summary: Promotion cycles with cut-offs and event codes
+      operationId: getCycles
+      parameters:
+        - { in: query, name: from, schema: { type: string, format: date } }
+        - { in: query, name: to, schema: { type: string, format: date } }
+      responses:
+        '200':
+          description: Cycles
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  cycles: { type: array, items: { $ref: '#/components/schemas/Cycle' } }
+                  blackouts:
+                    type: array
+                    items: { type: object, properties: { from: { type: string, format: date }, to: { type: string, format: date }, reason: { type: string } } }
+  /promohub/event-codes:
+    get:
+      tags: [PromoHub]
+      summary: Event codes and windows
+      operationId: getEventCodes
+      responses:
+        '200':
+          description: Event codes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  eventCodes:
+                    type: array
+                    items: { type: object, properties: { code: { type: string }, window: { type: array, items: { type: string, format: date } }, upliftMultiplier: { type: number } } }
+  /promohub/promotions:
+    get:
+      tags: [PromoHub]
+      summary: Search planned, approved, active or ended promotions (conflict and frequency search)
+      operationId: searchPromotions
+      parameters:
+        - { in: query, name: itemCode, schema: { type: string } }
+        - { in: query, name: from, schema: { type: string, format: date } }
+        - { in: query, name: to, schema: { type: string, format: date } }
+        - { in: query, name: channel, schema: { type: string, enum: [STORE, ESHOP, APP, MARKETPLACE] } }
+        - { in: query, name: status, schema: { type: string, enum: [DRAFT, PLANNED, APPROVED, RELEASED, ACTIVE, ENDED, WITHDRAWN] } }
+      responses:
+        '200':
+          description: Matching promotions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  promotions: { type: array, items: { $ref: '#/components/schemas/Promotion' } }
+              example:
+                meta: { simulated: true, source: PromoHub, fixtureVersion: '2.0', asOf: '2026-09-28' }
+                promotions:
+                  - promotionId: PM-2026-1180
+                    name: Skincare Member Day — 2nd item 50% off
+                    itemCodes: [SUNV-SPF50-100, DERM-CLN-150, LUMI-TNR-200]
+                    mechanic: MULTI_BUY_2ND
+                    channels: [APP, ESHOP]
+                    startDate: '2026-10-22'
+                    endDate: '2026-11-04'
+                    status: APPROVED
+  /promohub/drafts:
+    post:
+      tags: [PromoHub]
+      summary: Create a promotion draft after approval (simulated write)
+      operationId: createDraft
+      description: Only accepted when the request body carries an approved case reference and decision pack ID. The mock returns a draft ID prefixed `PD-` and description suffixed `[SIMULATED]`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/DraftRequest' }
+            example:
+              caseRef: PR-2026-1042
+              decisionPackId: DP-2026-1042-v1
+              description: Vitamin C Pilot Price Cut — C21
+              promotionType: LOCAL
+              mechanic: PRICE_CUT
+              itemCodes: [WTC-VITC-1000-20]
+              promotionalPrice: 89.0
+              priceZone: HK-STD
+              storeScope: PILOT-20
+              channels: [STORE]
+              startDate: '2026-10-08'
+              endDate: '2026-10-21'
+              eventCode: null
+              comparativeClaim: WAS_PRICE
+      responses:
+        '201':
+          description: Draft created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  draft:
+                    type: object
+                    properties:
+                      draftId: { type: string, example: PD-2026-1042 }
+                      status: { type: string, enum: [DRAFT] }
+                      description: { type: string, example: 'Vitamin C Pilot Price Cut — C21 [SIMULATED]' }
+                      createdAt: { type: string, format: date-time }
+        '409': { description: Draft already exists for this case reference (Checklist §2.11) }
+        '422': { description: Missing approved case reference / decision pack, or missing event code / price zone }
+  /promohub/drafts/{draftId}/validation:
+    get:
+      tags: [PromoHub]
+      summary: Validation result for a draft
+      operationId: getDraftValidation
+      parameters:
+        - { in: path, name: draftId, required: true, schema: { type: string } }
+        - $ref: '#/components/parameters/DemoFault'
+      responses:
+        '200':
+          description: Validation outcome
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  validation:
+                    type: object
+                    properties:
+                      draftId: { type: string }
+                      status: { type: string, enum: [PASSED, WARNING, FAILED] }
+                      checks:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code: { type: string, example: ITEM_ACTIVE }
+                            result: { type: string, enum: [PASS, WARN, FAIL] }
+                            message: { type: string }
+
+  # ------------------------------------------------------------ Trade Funding
+  /funding/commitments:
+    get:
+      tags: [Trade Funding Register]
+      summary: Search funding commitments covering an item and period
+      operationId: searchFunding
+      parameters:
+        - { in: query, name: itemCode, required: true, schema: { type: string } }
+        - { in: query, name: periodFrom, schema: { type: string, format: date } }
+        - { in: query, name: periodTo, schema: { type: string, format: date } }
+        - { in: query, name: channel, schema: { type: string } }
+        - { in: query, name: includeExpired, schema: { type: boolean, default: true } }
+      responses:
+        '200':
+          description: Commitments with coverage assessment against the requested period and channels
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  commitments: { type: array, items: { $ref: '#/components/schemas/FundingCommitment' } }
+              example:
+                meta: { simulated: true, source: Trade Funding Register, fixtureVersion: '2.0', asOf: '2026-09-28' }
+                commitments:
+                  - fundingRef: FC-2026-041
+                    supplierCode: S-GLW-114
+                    supplierName: Glow Beauty Laboratories (HK) Ltd
+                    itemCodes: [GLW-SRM-30ML]
+                    fundingType: SCAN_BACK
+                    ratePerUnit: 12.0
+                    fundedCap: 2000
+                    periodFrom: '2026-10-01'
+                    periodTo: '2026-11-30'
+                    channels: [STORE]
+                    status: AGREED_PENDING_EVIDENCE
+                    conditions: { minSellingPrice: 129.0, excludesClearance: true }
+                    coverage: { period: FULL, channels: FULL, capVsForecast: NOT_EVALUATED }
+                    recognisedForApproval: false
+                    recognitionReason: Status AGREED_PENDING_EVIDENCE — Margin Policy §5.1 requires CONFIRMED
+  /funding/commitments/{fundingRef}:
+    get:
+      tags: [Trade Funding Register]
+      summary: Get a commitment
+      operationId: getFunding
+      parameters:
+        - { in: path, name: fundingRef, required: true, schema: { type: string } }
+      responses:
+        '200':
+          description: Commitment
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  commitment: { $ref: '#/components/schemas/FundingCommitment' }
+        '404': { $ref: '#/components/responses/NotFound' }
+  /funding/commitments/{fundingRef}/evidence-verifications:
+    post:
+      tags: [Trade Funding Register]
+      summary: Verify an uploaded confirmation document against a commitment (simulated Finance action)
+      operationId: verifyEvidence
+      description: The platform extracts the letter's fields and submits them; the mock compares with the register and returns a deterministic outcome. In production this remains a Finance action; the demo labels the verifier as simulated.
+      parameters:
+        - { in: path, name: fundingRef, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [documentRef, extracted]
+              properties:
+                documentRef: { type: string, example: GBL/TF/2026/0917 }
+                uploadedBy: { type: string, example: E10815 }
+                extracted:
+                  type: object
+                  properties:
+                    supplierName: { type: string }
+                    authorisedContact: { type: string }
+                    itemCodes: { type: array, items: { type: string } }
+                    fundingType: { type: string }
+                    ratePerUnit: { type: number }
+                    fundedCap: { type: integer }
+                    periodFrom: { type: string, format: date }
+                    periodTo: { type: string, format: date }
+                    channels: { type: array, items: { type: string } }
+                    conditions: { type: object }
+                requestContext:
+                  type: object
+                  description: The promotion being evaluated, so coverage can be computed
+                  properties:
+                    periodFrom: { type: string, format: date }
+                    periodTo: { type: string, format: date }
+                    channels: { type: array, items: { type: string } }
+                    forecastUnits: { type: integer }
+                    promotionalPrice: { type: number }
+      responses:
+        '200':
+          description: Verification outcome
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  verification:
+                    type: object
+                    properties:
+                      fundingRef: { type: string }
+                      outcome: { type: string, enum: [VERIFIED, REJECTED] }
+                      checks:
+                        type: array
+                        items: { type: object, properties: { check: { type: string }, result: { type: string, enum: [PASS, FAIL] }, detail: { type: string } } }
+                      coverage: { $ref: '#/components/schemas/Coverage' }
+                      recognisedFundingPerUnit: { type: number, example: 12.0 }
+                      newStatus: { type: string, example: CONFIRMED }
+                      verifiedBy: { type: string, example: 'Finance Controller (SIMULATED)' }
+
+  # ------------------------------------------------------------ Authority Directory
+  /authority/resolve:
+    post:
+      tags: [Authority Directory]
+      summary: Resolve reviewer, approver and informed parties for a case
+      operationId: resolveAuthority
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [businessUnit, categoryLeadRoles, band, requesterId, expectedDecisionDate]
+              properties:
+                businessUnit: { type: string, example: WTCHK }
+                categoryLeadRoles: { type: array, items: { type: string }, example: [CATEGORY_LEAD_HEALTH] }
+                band: { type: string, enum: [A, B, C, D] }
+                requesterId: { type: string, example: E10801 }
+                preparerIds: { type: array, items: { type: string } }
+                expectedDecisionDate: { type: string, format: date, example: '2026-09-30' }
+                parallelGates: { type: array, items: { type: string, enum: [COMPLIANCE, SUPPLY_CHAIN, CUTOFF_EXCEPTION] } }
+                flash: { type: boolean, default: false }
+      responses:
+        '200':
+          description: Resolved routing
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  routing: { $ref: '#/components/schemas/Routing' }
+              example:
+                meta: { simulated: true, source: Authority Directory, fixtureVersion: '2.0', asOf: '2026-09-28' }
+                routing:
+                  band: A
+                  reviewer: null
+                  approver: { role: CATEGORY_LEAD_HEALTH, employeeId: E10301, name: Tommy Chu, viaDelegation: DLG-2026-011, reason: Segregation of duties — requester E10234 holds the approving role (DoA §6.1) }
+                  informed: [ { role: HEAD_OF_TRADING, employeeId: E10021, name: Rachel Tsang, reason: Advisory A-01 own-brand margin below 40% } ]
+                  gateOwners: []
+                  policyVersion: WTCHK-COM-POL-032 v3.2
+  /authority/delegations:
+    get:
+      tags: [Authority Directory]
+      summary: Delegations in force for a role on a date
+      operationId: getDelegations
+      parameters:
+        - { in: query, name: role, schema: { type: string } }
+        - { in: query, name: asOf, schema: { type: string, format: date } }
+      responses:
+        '200':
+          description: Delegations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  delegations: { type: array, items: { $ref: '#/components/schemas/Delegation' } }
+
+  # ------------------------------------------------------------ Compliance
+  /compliance/restrictions/{regulatoryClass}:
+    get:
+      tags: [Compliance Register]
+      summary: Rules for a regulatory class (mirrors Guidelines §9)
+      operationId: getRestriction
+      parameters:
+        - { in: path, name: regulatoryClass, required: true, schema: { type: string } }
+      responses:
+        '200':
+          description: Restriction record
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  restriction: { $ref: '#/components/schemas/Restriction' }
+  /compliance/reviews:
+    post:
+      tags: [Compliance Register]
+      summary: Open a Compliance review task (simulated)
+      operationId: createComplianceReview
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [caseRef, reason, itemCodes]
+              properties:
+                caseRef: { type: string }
+                reason: { type: string, enum: [RESTRICTED_CLASS, REFERENCE_PRICE_NOT_MET, CLAIMS_IN_COPY, COUPON_TERMS, MECHANIC_REVIEW] }
+                itemCodes: { type: array, items: { type: string } }
+                regulatoryClasses: { type: array, items: { type: string } }
+                proposedCopy: { type: string }
+                guidelineRefs: { type: array, items: { type: string } }
+                dueDate: { type: string, format: date, description: 3 working days from creation }
+      responses:
+        '201':
+          description: Review task created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  review: { $ref: '#/components/schemas/ComplianceReview' }
+  /compliance/reviews/{reviewId}:
+    get:
+      tags: [Compliance Register]
+      summary: Review status
+      operationId: getComplianceReview
+      parameters:
+        - { in: path, name: reviewId, required: true, schema: { type: string } }
+      responses:
+        '200':
+          description: Review
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  review: { $ref: '#/components/schemas/ComplianceReview' }
+
+  # ------------------------------------------------------------ Approval & Notification Hub
+  /approvals/tasks:
+    post:
+      tags: [Approval & Notification Hub]
+      summary: Create an approval, review or gate task for a named person (simulated Teams card)
+      operationId: createTask
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/TaskRequest' }
+      responses:
+        '201':
+          description: Task created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  task: { $ref: '#/components/schemas/Task' }
+  /approvals/tasks/{taskId}:
+    get:
+      tags: [Approval & Notification Hub]
+      summary: Task status
+      operationId: getTask
+      parameters:
+        - { in: path, name: taskId, required: true, schema: { type: string } }
+        - $ref: '#/components/parameters/DemoClock'
+      responses:
+        '200':
+          description: Task
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  task: { $ref: '#/components/schemas/Task' }
+  /approvals/tasks/{taskId}/decision:
+    post:
+      tags: [Approval & Notification Hub]
+      summary: Record a human decision (taken in the demo inbox by the presenter acting as the approver)
+      operationId: recordDecision
+      parameters:
+        - { in: path, name: taskId, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [decision, decidedBy]
+              properties:
+                decision: { type: string, enum: [APPROVE, APPROVE_WITH_CONDITIONS, RETURN_FOR_REVISION, REJECT, ESCALATE, GATE_CLEARED, GATE_FAILED] }
+                decidedBy: { type: string, example: E10234 }
+                onBehalfOf: { type: string, description: Delegator employee ID when deciding via delegation }
+                delegationRef: { type: string }
+                conditions: { type: array, items: { type: string } }
+                comment: { type: string }
+      responses:
+        '200':
+          description: Decision recorded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  task: { $ref: '#/components/schemas/Task' }
+        '403': { description: Decider does not hold the role or a valid delegation for this task }
+  /notifications:
+    post:
+      tags: [Approval & Notification Hub]
+      summary: Send an FYI notification or reminder (simulated Teams/Outlook)
+      operationId: sendNotification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [to, kind, caseRef, message]
+              properties:
+                to: { type: array, items: { type: string }, description: Employee IDs }
+                kind: { type: string, enum: [FYI, REMINDER, ESCALATION, STATUS_UPDATE, HANDOVER] }
+                caseRef: { type: string }
+                message: { type: string }
+      responses:
+        '202':
+          description: Accepted (simulated delivery)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta: { $ref: '#/components/schemas/Meta' }
+                  notificationId: { type: string }
+
+components:
+  parameters:
+    ItemCode:
+      in: path
+      name: itemCode
+      required: true
+      schema: { type: string }
+      example: WTC-VITC-1000-20
+    DemoClock:
+      in: header
+      name: X-Demo-Clock
+      required: false
+      schema: { type: string, format: date }
+      description: Overrides the demo date (default 2026-09-28)
+    DemoFault:
+      in: header
+      name: X-Demo-Fault
+      required: false
+      schema: { type: string, enum: [erp-cost-timeout, promohub-validation-warning, funding-register-unavailable] }
+  responses:
+    NotFound:
+      description: Entity not found
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example: { meta: { simulated: true, source: Product Master, fixtureVersion: '2.0' }, error: { code: NOT_FOUND, message: 'Item PILOT-X not found' } }
+    UpstreamTimeout:
+      description: Simulated upstream timeout (fault injection)
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Error' }
+          example: { meta: { simulated: true, source: ERP, fixtureVersion: '2.0' }, error: { code: UPSTREAM_TIMEOUT, message: 'ERP cost service did not respond within 8s', retryable: true } }
+  schemas:
+    Meta:
+      type: object
+      required: [simulated, source, fixtureVersion]
+      properties:
+        simulated: { type: boolean, enum: [true] }
+        source: { type: string }
+        fixtureVersion: { type: string }
+        asOf: { type: string }
+        latencyMs: { type: integer }
+    Error:
+      type: object
+      properties:
+        meta: { $ref: '#/components/schemas/Meta' }
+        error:
+          type: object
+          properties:
+            code: { type: string }
+            message: { type: string }
+            retryable: { type: boolean }
+    Item:
+      type: object
+      properties:
+        itemCode: { type: string }
+        barcode: { type: string }
+        barcodeStatus: { type: string, enum: [ACTIVE, INACTIVE], default: ACTIVE }
+        descriptionEn: { type: string }
+        descriptionZh: { type: string }
+        brand: { type: string }
+        ownBrand: { type: boolean }
+        supplierCode: { type: string }
+        supplierName: { type: string }
+        hierarchy:
+          type: object
+          properties: { division: { type: string }, department: { type: string }, class: { type: string }, subclass: { type: string } }
+        categoryGroup: { type: string, description: Margin-floor grouping (Margin Policy §3) }
+        benchmarkGroup: { type: string, description: Uplift benchmark grouping (PPE Part 2) }
+        categoryLeadRole: { type: string }
+        lifecycleStatus: { type: string, enum: [NEW, ACTIVE, PHASE_OUT, DELISTED] }
+        delistDate: { type: string, format: date, nullable: true }
+        regulatoryClass: { type: string }
+        strategicFlag: { type: string, enum: [HERO, CORE, TAIL] }
+        approvedClaims: { type: array, items: { type: string } }
+        channelEligibility: { type: array, items: { type: string } }
+        packSize: { type: string }
+    ItemSummary:
+      type: object
+      properties:
+        itemCode: { type: string }
+        descriptionEn: { type: string }
+        brand: { type: string }
+        lifecycleStatus: { type: string }
+        regulatoryClass: { type: string }
+    PriceRecord:
+      type: object
+      properties:
+        itemCode: { type: string }
+        priceZone: { type: string }
+        regularPrice: { type: number }
+        currency: { type: string }
+        effectiveFrom: { type: string, format: date }
+        daysAtCurrentPrice: { type: integer, description: Calendar days from effectiveFrom to asOf (exclusive of asOf) }
+        lastPriceChangeDate: { type: string, format: date }
+        lastChangeDirection: { type: string, enum: [INCREASE, DECREASE, NONE] }
+        history:
+          type: array
+          items: { type: object, properties: { price: { type: number }, effectiveFrom: { type: string, format: date }, effectiveTo: { type: string, format: date } } }
+    CostRecord:
+      type: object
+      properties:
+        itemCode: { type: string }
+        landedCost: { type: number }
+        currency: { type: string }
+        costEffectiveFrom: { type: string, format: date }
+        offInvoiceAdjustments:
+          type: array
+          items:
+            type: object
+            properties:
+              fundingRef: { type: string }
+              amountPerUnit: { type: number }
+              periodFrom: { type: string, format: date }
+              periodTo: { type: string, format: date }
+              status: { type: string }
+              coverage: { type: string, enum: [FULL, PARTIAL_PERIOD, NOT_COVERED] }
+        effectiveUnitCost: { type: number }
+        effectiveUnitCostBasis: { type: string }
+    PerformanceRecord:
+      type: object
+      properties:
+        itemCode: { type: string }
+        scope: { type: string }
+        baselineWeeklyUnits: { type: integer }
+        baselineBasis: { type: string }
+        channelSplit: { type: object, additionalProperties: { type: integer } }
+        promoWeeksLast12ByChannel: { type: object, additionalProperties: { type: integer } }
+        promoHistory:
+          type: array
+          items: { type: object, properties: { promotionId: { type: string }, from: { type: string, format: date }, to: { type: string, format: date }, weeks: { type: integer }, uplift: { type: number } } }
+    StockRecord:
+      type: object
+      properties:
+        itemCode: { type: string }
+        stockOnHand: { type: integer }
+        inbound:
+          type: array
+          items:
+            type: object
+            properties:
+              qty: { type: integer }
+              eta: { type: string, format: date }
+              status: { type: string }
+              expediteOption: { type: object, properties: { eta: { type: string, format: date }, costHkd: { type: number }, confirmBy: { type: string, format: date } } }
+        weeksOfCoverAtBaseline: { type: number }
+    StoreScope:
+      type: object
+      properties:
+        scopeCode: { type: string }
+        name: { type: string }
+        storeCount: { type: integer }
+        priceZones: { type: array, items: { type: string } }
+        formats: { type: array, items: { type: string } }
+        composedOf: { type: array, items: { type: string } }
+        subsetOf: { type: string }
+    Cycle:
+      type: object
+      properties:
+        cycleCode: { type: string }
+        startDate: { type: string, format: date }
+        endDate: { type: string, format: date }
+        cutoffs:
+          type: object
+          properties:
+            leaflet: { type: string, format: date }
+            digital: { type: string, format: date }
+            inStore: { type: string, format: date }
+            flashWorkingDays: { type: integer }
+        eventCodes: { type: array, items: { type: string } }
+    Promotion:
+      type: object
+      properties:
+        promotionId: { type: string }
+        name: { type: string }
+        itemCodes: { type: array, items: { type: string } }
+        mechanic: { type: string }
+        promotionalPrice: { type: number }
+        discountPct: { type: number }
+        channels: { type: array, items: { type: string } }
+        storeScope: { type: string, nullable: true }
+        startDate: { type: string, format: date }
+        endDate: { type: string, format: date }
+        cycles: { type: array, items: { type: string } }
+        type: { type: string }
+        status: { type: string }
+        caseRef: { type: string }
+    DraftRequest:
+      type: object
+      required: [caseRef, decisionPackId, description, promotionType, mechanic, itemCodes, priceZone, channels, startDate, endDate]
+      properties:
+        caseRef: { type: string }
+        decisionPackId: { type: string }
+        description: { type: string }
+        promotionType: { type: string }
+        mechanic: { type: string }
+        itemCodes: { type: array, items: { type: string } }
+        promotionalPrice: { type: number }
+        offerTerms: { type: object }
+        priceZone: { type: string }
+        storeScope: { type: string, nullable: true }
+        channels: { type: array, items: { type: string } }
+        startDate: { type: string, format: date }
+        endDate: { type: string, format: date }
+        eventCode: { type: string, nullable: true }
+        comparativeClaim: { type: string, enum: [WAS_PRICE, SAVE_AMOUNT, PCT_OFF, NONE_SPECIAL_PRICE] }
+    FundingCommitment:
+      type: object
+      properties:
+        fundingRef: { type: string }
+        supplierCode: { type: string }
+        supplierName: { type: string }
+        itemCodes: { type: array, items: { type: string } }
+        fundingType: { type: string, enum: [SCAN_BACK, LUMP_SUM, OFF_INVOICE, FREE_GOODS, COOP_MEDIA] }
+        ratePerUnit: { type: number }
+        amount: { type: number }
+        amountPerUnit: { type: number }
+        freeUnits: { type: integer }
+        fundedCap: { type: integer, nullable: true }
+        periodFrom: { type: string, format: date }
+        periodTo: { type: string, format: date }
+        channels: { type: array, items: { type: string }, nullable: true }
+        status: { type: string, enum: [DRAFT, AGREED_PENDING_EVIDENCE, CONFIRMED, EXPIRED, CLAIMED, CANCELLED] }
+        evidenceRef: { type: string, nullable: true }
+        authorisedContact: { type: string }
+        conditions: { type: object }
+        notes: { type: string }
+        coverage: { $ref: '#/components/schemas/Coverage' }
+        recognisedForApproval: { type: boolean }
+        recognitionReason: { type: string }
+    Coverage:
+      type: object
+      properties:
+        period: { type: string, enum: [FULL, PARTIAL_PERIOD, NOT_COVERED, NOT_EVALUATED] }
+        channels: { type: string, enum: [FULL, PARTIAL_CHANNEL, NOT_COVERED, NOT_APPLICABLE, NOT_EVALUATED] }
+        capVsForecast: { type: string, enum: [NO_CAP, CAP_ABOVE_FORECAST, CAP_BELOW_FORECAST, NOT_EVALUATED] }
+        proratedRatePerUnit: { type: number }
+    Routing:
+      type: object
+      properties:
+        band: { type: string }
+        reviewer: { $ref: '#/components/schemas/Person' }
+        approver: { $ref: '#/components/schemas/Person' }
+        additionalApprovers: { type: array, items: { $ref: '#/components/schemas/Person' } }
+        informed: { type: array, items: { $ref: '#/components/schemas/Person' } }
+        gateOwners: { type: array, items: { $ref: '#/components/schemas/Person' } }
+        policyVersion: { type: string }
+    Person:
+      type: object
+      nullable: true
+      properties:
+        role: { type: string }
+        employeeId: { type: string }
+        name: { type: string }
+        viaDelegation: { type: string, nullable: true }
+        reason: { type: string }
+    Delegation:
+      type: object
+      properties:
+        ref: { type: string }
+        role: { type: string }
+        delegatorId: { type: string }
+        delegateId: { type: string }
+        bandScope: { type: array, items: { type: string } }
+        from: { type: string, format: date }
+        to: { type: string, format: date }
+        type: { type: string, enum: [STANDING, ABSENCE] }
+        reason: { type: string }
+    Restriction:
+      type: object
+      properties:
+        regulatoryClass: { type: string }
+        screen: { type: string, enum: [PROCEED, BLOCKED] }
+        complianceReview: { type: string, nullable: true }
+        comparativeClaims: { type: string }
+        flashAllowed: { type: boolean }
+        leafletAllowed: { type: boolean }
+        leafletConditions: { type: string }
+        guidelineRef: { type: string }
+    ComplianceReview:
+      type: object
+      properties:
+        reviewId: { type: string, example: CR-2026-0187 }
+        caseRef: { type: string }
+        reason: { type: string }
+        assignedTo: { $ref: '#/components/schemas/Person' }
+        dueDate: { type: string, format: date }
+        status: { type: string, enum: [OPEN, APPROVED, APPROVED_WITH_WORDING_CHANGES, REJECTED] }
+        wordingChanges: { type: array, items: { type: string } }
+    TaskRequest:
+      type: object
+      required: [caseRef, kind, assigneeId, dueDate, decisionPackId]
+      properties:
+        caseRef: { type: string }
+        kind: { type: string, enum: [FINANCE_REVIEW, APPROVAL, COMPLIANCE_GATE, SUPPLY_GATE, CUTOFF_EXCEPTION, SETUP_HANDOVER] }
+        assigneeId: { type: string }
+        onBehalfOf: { type: string, nullable: true }
+        delegationRef: { type: string, nullable: true }
+        dueDate: { type: string, format: date }
+        decisionPackId: { type: string }
+        summary: { type: string }
+    Task:
+      type: object
+      properties:
+        taskId: { type: string, example: AT-2026-3301 }
+        caseRef: { type: string }
+        kind: { type: string }
+        assignee: { $ref: '#/components/schemas/Person' }
+        status: { type: string, enum: [OPEN, REMINDED, ESCALATED, DECIDED, REASSIGNED] }
+        createdAt: { type: string, format: date-time }
+        dueDate: { type: string, format: date }
+        decision: { type: string, nullable: true }
+        decidedBy: { $ref: '#/components/schemas/Person' }
+        decidedAt: { type: string, format: date-time, nullable: true }
+        conditions: { type: array, items: { type: string } }
+        comment: { type: string }
+        history: { type: array, items: { type: object, properties: { at: { type: string, format: date-time }, event: { type: string }, detail: { type: string } } } }
