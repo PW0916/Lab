@@ -162,7 +162,6 @@ th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: 
 .wf-meta { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
 .wf-body { display: grid; grid-template-columns: 1fr 280px; gap: 12px; align-items: start; }
 .wf-inspector { position: sticky; top: 0; }
-.wf-node .hit { fill: transparent; cursor: pointer; }
 .wf-canvas {
   overflow: auto;
   background: #fbf8f1;
