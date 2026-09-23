@@ -170,7 +170,7 @@ th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: 
   margin-bottom: 14px;
   max-height: 68vh;
 }
-.wf-node { cursor: pointer; }
+.wf-node { cursor: pointer; pointer-events: all; }
 .wf-node rect { fill: var(--paper-2); stroke: #2a4a3c; stroke-width: 1.6; }
 .wf-node.userTask rect { fill: #fff3cd; stroke: #b58900; }
 .wf-node.userTask rect.inner { fill: none; stroke: #b58900; stroke-width: 1; }
